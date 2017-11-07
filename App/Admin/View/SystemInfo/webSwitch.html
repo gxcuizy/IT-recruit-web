@@ -1,0 +1,24 @@
+<div class="pageContent">
+	<form method="post" action="__URL__/setSwitch/navTabId/systemInfo/callbackType/closeCurrent"  class="pageForm required-validate" 
+		onsubmit="return validateCallback(this,dialogAjaxDone);">
+		<div class="pageFormContent" layoutH="58">
+			<dl>
+				<volist name="webSwitch" id="vo">
+				<dt>网站运行状态：</dt>
+					<dd>
+						<input type="radio" name="web_status" value='1' <if condition="$vo.web_status eq 1">checked</if> />开启
+						<input type="radio" name="web_status" value='0' <if condition="$vo.web_status eq 0">checked</if> />关闭
+						<input type="hidden" value="{$vo.id}" name="id" />
+					</dd>
+				</dl>
+			</volist>
+		</div>
+		<div class="formBar">
+			<ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">设置</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+</div>
+

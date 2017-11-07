@@ -1,0 +1,19 @@
+<div class="pageContent">
+	<form method="post" action="__URL__/update/navTabId/listAdv/callbackType/closeCurrent"  class="pageForm required-validate" 
+		onsubmit="return validateCallback(this,dialogAjaxDone);">
+		<div class="pageFormContent" layoutH="60">
+			<dl>
+				<dt>亮点标签名：</dt>
+				<dd><input type="text" class="required" value="{$vo.name}"  style="width:100%" name="name"/></dd>
+				<input type="hidden" value="{$vo.id}" name="id"/>
+			</dl>
+		</div>
+		<div class="formBar">
+			<ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">修改</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+</div>
+

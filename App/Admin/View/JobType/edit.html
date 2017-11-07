@@ -1,0 +1,31 @@
+<div class="pageContent">
+	<form method="post" action="__URL__/update/navTabId/listJobType/callbackType/closeCurrent"  class="pageForm required-validate" 
+		onsubmit="return validateCallback(this,dialogAjaxDone);">
+		<div class="pageFormContent" layoutH="58">
+			<input type="hidden" name="id" value="{$vo.id}"/>
+			<dl>
+				<dt>招聘关键字：</dt>
+				<dd><input type="text" class="required" maxlength="4" name="name" value="{$vo.name}"/></dd>
+			</dl>
+			<dl>
+				<dt>招聘类型：</dt>
+				<dd>
+					<select name="pid" class="required">
+						<option value="" >请选择招聘类型</option>
+						<option value="0" <if condition="$vo.pid eq 0">selected='selected'</if>>技术类</option>
+						<option value="1" <if condition="$vo.pid eq 0">selected='selected'</if>>产品类</option>
+						<option value="2" <if condition="$vo.pid eq 0">selected='selected'</if>>设计类</option>
+						<option value="3" <if condition="$vo.pid eq 0">selected='selected'</if>>运营类</option>
+					</select>
+				</dd>
+			</dl>
+		</div>
+		<div class="formBar">
+			<ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">更改</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+</div>
+

@@ -1,0 +1,30 @@
+<div class="pageContent">
+	<form method="post" action="__URL__/update/navTabId/listRole/callbackType/closeCurrent"  class="pageForm required-validate" 
+		onsubmit="return validateCallback(this,dialogAjaxDone);">
+		<div class="pageFormContent" layoutH="60">
+			<dl>
+				<dt>角色名称：</dt>
+				<dd><input type="text" class="required" name="name" size="30" value="{$vo.name}" /></dd>
+			</dl>
+			<dl>
+				<dt>角色描述：</dt>
+				<dd><input type="text" class="required" name="remark" size="30" value="{$vo.remark}" /></dd>
+			</dl>
+			<dl>
+				<dt>角色状态：</dt>
+				<dd>
+					<input type="radio" name="status" value="1" checked <if condition="$vo.status eq '1'">checked</if> />启用
+					<input type="radio" name="status" value="0" style="margin-left:30px;" <if condition="$vo.status eq '0'">checked</if> />禁用
+				</dd>
+			</dl>
+			<input type="hidden" name="id" value="{$vo.id}" />
+		</div>
+		<div class="formBar">
+			<ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">修改</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+</div>
+

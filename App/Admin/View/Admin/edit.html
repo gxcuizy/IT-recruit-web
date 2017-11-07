@@ -1,0 +1,32 @@
+<div class="pageContent">
+	<form method="post" action="__URL__/update/navTabId/listAdmin/callbackType/closeCurrent"  class="pageForm required-validate" 
+		onsubmit="return validateCallback(this,dialogAjaxDone);">
+		<div class="pageFormContent" layoutH="58">
+			<dl>
+				<dt>用户名：</dt>
+				<dd><input type="text" value="{$vo.admin_name}" minlength="5" style="width:100%" name="admin_name" /></dd>
+			</dl>
+			<dl>
+				<dt>新密码：</dt>
+				<dd><input type="password" minlength="5" maxlength="17" class="required alphanumeric" style="width:100%" name="admin_password" alt="密码长度为5-17位" /></dd>
+			</dl>
+			<dl>
+				<dt>确认密码：</dt>
+				<dd><input type="password" minlength="5" maxlength="17" class="required alphanumeric" style="width:100%" name="repassword" alt="密码长度为5-17位" /></dd>
+			</dl>
+			<dl>
+				<dd>
+					<!-- <input type="hidden"  size="10" value="1" name="type"/> -->
+					<input type="hidden" name="id" value="{$vo.id}" />
+				</dd>
+			</dl> 
+		</div>
+		<div class="formBar">
+			<ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">更改</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+</div>
+

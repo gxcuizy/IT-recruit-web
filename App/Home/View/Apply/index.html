@@ -1,0 +1,265 @@
+<extend name="Common:list" />
+  <!-- 标题 -->
+  <block name="title">
+    <title>招聘信息列表-{$sysInfo.title}</title>
+  </block>
+  <block name="js">
+     <script type="text/javascript">
+      $(function(){
+        $(".pagination li a").mousemove(function(){
+          var ds = $(this).parent().attr('class');
+          if(ds == 'disabled' || ds == 'active'){
+            // 当前页和禁止点击的上一页和下一页不可触发
+          }else{
+            $(this).css("cursor","pointer");
+            $(this).parent().addClass('active');
+            $(this).parent().attr('a','b');
+          }
+        }).mouseout(function(){
+          var getb = $(this).parent().attr('a');
+          if(getb == 'b'){
+            $(this).css("cursor","");
+            $(this).attr("a","");
+            $(this).parent().removeClass('active');
+          }
+        });
+      });
+    </script>
+  </block>
+  <!-- 标题结束 -->
+  <!-- 导航开始 -->
+  <block name="nav">
+    <include file="Common:header" />
+  </block>
+  <!-- 导航结束 -->
+  <!-- 页面主体  -->
+  <!-- 搜索框 -->
+  <block name="top">
+    <assign name="kw" value="$Think.get.kw" />
+    <assign name="jt" value="$Think.get.jt" />
+    <assign name="at" value="$Think.get.at" />
+    <assign name="sl" value="$Think.get.sl" />
+    <assign name="t" value="$Think.get.t" />
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <div class="row" style="margin-top:10px;">
+          <div class="col-lg-10">
+            <form action="{:U('Home/Apply/index')}" method="get" id="search">
+              <div class="input-group">
+                <input type="text" name="kw" class="form-control" placeholder="请输入职位名称：如PHP高级工程师等" style="border:2px solid #286090;" value="{$kw}">
+                <span class="input-group-btn">
+                  <button class="btn btn-primary" type="submit">
+                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                    搜索</button>
+                </span>
+              </div>
+            </form>
+            <!-- /input-group -->
+          </div><!-- /.col-lg-6 -->
+        </div>
+        <!-- 热门关键字 -->
+        <div class="row hidden-xs">
+          <p class="text-muted" style="margin:10px 0 0px 20px;">热门搜索：
+              <volist name="hot" id="hot">
+                  <a href="{:U('Home/Apply/index/',array('kw'=>$hot['hot_name'],'jt'=>$jt,'at'=>$at))}">{$hot.hot_name}&nbsp;&nbsp;&nbsp;</a>
+              </volist>
+          </p>
+        </div>
+      </div>
+    </div>
+  </block>
+  <!-- 搜索框结束 -->
+  <block name="main">
+    <div class="col-md-9">
+      <!-- 标题导航筛选栏 -->
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <span>为您找到<strong> {$applyCount} </strong>个招聘职位</span>
+          <div class="btn-group pull-right hidden-xs" style="margin-top:-7px;">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {$sl?$sl:'月薪不限'} <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+              <li><a href="{:U('Home/Apply/index/',array('kw'=>$kw,'jt'=>$jt,'at'=>$at,'t'=>$t))}">月薪不限</a></li>
+              <li><a href="{:U('Home/Apply/index/',array('kw'=>$kw,'jt'=>$jt,'at'=>$at,'t'=>$t,'sl'=>'1000-3000'))}">1000-3000</a></li>
+              <li><a href="{:U('Home/Apply/index/',array('kw'=>$kw,'jt'=>$jt,'at'=>$at,'t'=>$t,'sl'=>'3000-5000'))}">3000-5000</a></li>
+              <li><a href="{:U('Home/Apply/index/',array('kw'=>$kw,'jt'=>$jt,'at'=>$at,'t'=>$t,'sl'=>'5000-7000'))}">5000-7000</a></li>
+              <li><a href="{:U('Home/Apply/index/',array('kw'=>$kw,'jt'=>$jt,'at'=>$at,'t'=>$t,'sl'=>'7000-10000'))}">7000-10000</a></li>
+              <li><a href="{:U('Home/Apply/index/',array('kw'=>$kw,'jt'=>$jt,'at'=>$at,'t'=>$t,'sl'=>'10000+'))}">10000+</a></li>
+            </ul>
+          </div>
+          <div class="btn-group pull-right hidden-xs" style="margin-top:-7px;margin-right:15px;">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="">
+            {$t?$t:'发布时间不限'} <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+              <li><a href="{:U('Home/Apply/index/',array('kw'=>$kw,'jt'=>$jt,'at'=>$at,'sl'=>$sl))}">发布时间不限</a></li>
+              <li><a href="{:U('Home/Apply/index/',array('kw'=>$kw,'jt'=>$jt,'at'=>$at,'sl'=>$sl,'t'=>'一天内'))}">一天内</a></li>
+              <li><a href="{:U('Home/Apply/index/',array('kw'=>$kw,'jt'=>$jt,'at'=>$at,'sl'=>$sl,'t'=>'三天内'))}">三天内</a></li>
+              <li><a href="{:U('Home/Apply/index/',array('kw'=>$kw,'jt'=>$jt,'at'=>$at,'sl'=>$sl,'t'=>'一周内'))}">一周内</a></li>
+              <li><a href="{:U('Home/Apply/index/',array('kw'=>$kw,'jt'=>$jt,'at'=>$at,'sl'=>$sl,'t'=>'一个月内'))}">一个月内</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table class="table  table-hover" style="border-bottom:1px solid #ddd;">
+          <thead>
+            <tr class="success">
+              <th>招聘职位名称</th>
+              <th>发布招聘企业</th>
+              <th>工作地点</th>
+              <th>发布时间</th>
+              <th>月薪</th>
+            </tr>
+          </thead>
+          <tbody>
+            <volist name="list" id="vo">
+              <tr>
+                <td><a href="{:U('Home/Apply/applyDetails/','id='.$vo['id'])}">{$vo.job_name}</a></td>
+                <td>{$vo.en_name}</td>
+                <td>{$vo.work_province}-{$vo.work_city}</td>
+                <td>{$vo.publish_time|date="Y-m-d",###}</td>
+                <td><span class="glyphicon glyphicon-yen"></span>{$vo.salary}</td>
+              </tr>
+            </volist>
+          </tbody>
+        </table>
+      </div>
+      <!-- 职位列表结束 -->
+      <!-- 分页  -->
+      <div class="row">
+        <nav class="text-center col-md-12" style="margin-top:-15px;">
+          <ul class="pagination">
+            <eq name="page" value="1" >
+              <li class="disabled">
+              <a href="#">
+                <span aria-hidden="true">上一页</span>
+              </a>
+            </li>
+            <else />
+              <li>   
+                <a href="{:U('Home/Apply/index/',array('kw'=>$kw,'jt'=>$jt,'at'=>$at,'page'=>($page-1),'sl'=>$sl,'t'=>$t))}">
+                  <span aria-hidden="true">上一页</span>
+                </a>
+              </li>
+            </eq>
+            <!-- 页码小于8 -->            
+            <lt name="pageCount" value="8">
+              <for start="1" end="$pageCount+1">
+                <li <eq name="i" value="$page" >class="active"</eq>>
+                  <a href="{:U('Home/Apply/index/',array('kw'=>$kw,'jt'=>$jt,'at'=>$at,'page'=>($i),'sl'=>$sl,'t'=>$t))}">{$i}</a>
+                </li>
+              </for>
+            </lt>
+            <!-- 页数为8、9 -->
+            <if condition="($pageCount gt 7) AND ($pageCount lt 10) AND ($page gt 5)">
+              <li <eq name="page" value="1" >class="active"</eq>>
+                <a href="{:U('Home/Apply/index/',array('kw'=>$kw,'jt'=>$jt,'at'=>$at,'page'=>1,'sl'=>$sl,'t'=>$t))}">1</a>
+              </li>
+              <li>
+                <a href="#">...</a>
+              </li>              
+              <for start="$pageCount-5" end="$pageCount+1">
+                <li <eq name="i" value="$page" >class="active"</eq>>
+                  <a href="{:U('Home/Apply/index/',array('kw'=>$kw,'jt'=>$jt,'at'=>$at,'page'=>($i),'sl'=>$sl,'t'=>$t))}">{$i}</a>
+                </li>
+              </for>
+            <elseif condition="($pageCount gt 7) AND ($pageCount lt 10) AND ($page lt 6)" />         
+              <for start="1" end="7">
+                <li <eq name="i" value="$page" >class="active"</eq>>
+                  <a href="{:U('Home/Apply/index/',array('kw'=>$kw,'jt'=>$jt,'at'=>$at,'page'=>($i),'sl'=>$sl,'t'=>$t))}">{$i}</a>
+                </li>
+              </for>
+              <li>
+                <a href="#">...</a>
+              </li>
+              <li <eq name="page" value="$pageCount" >class="active"</eq>>
+                <a href="{:U('Home/Apply/index/',array('kw'=>$kw,'jt'=>$jt,'at'=>$at,'page'=>$pageCount,'sl'=>$sl,'t'=>$t))}">{$pageCount}</a>
+              </li>
+            </if>
+            <!-- 页码为大于等于10 -->
+            <if condition="($pageCount gt 9) AND ($page lt 6)">        
+              <for start="1" end="7">
+                <li <eq name="i" value="$page" >class="active"</eq>>
+                  <a href="{:U('Home/Apply/index/',array('kw'=>$kw,'jt'=>$jt,'at'=>$at,'page'=>($i),'sl'=>$sl,'t'=>$t))}">{$i}</a>
+                </li>
+              </for>
+              <li>
+                <a href="#">...</a>
+              </li>
+              <li <eq name="page" value="$pageCount" >class="active"</eq>>
+                <a href="{:U('Home/Apply/index/',array('kw'=>$kw,'jt'=>$jt,'at'=>$at,'page'=>$pageCount,'sl'=>$sl,'t'=>$t))}">{$pageCount}</a>
+              </li>    
+            <elseif condition="($pageCount gt 9) AND (($pageCount-$page) gt 3)" />
+              <li <eq name="page" value="1" >class="active"</eq>>
+                <a href="{:U('Home/Apply/index/',array('kw'=>$kw,'jt'=>$jt,'at'=>$at,'page'=>1,'sl'=>$sl,'t'=>$t))}">1</a>
+              </li>
+              <li>
+                <a href="#">...</a>
+              </li>
+              <for start="($page-2)" end="($page+3)">
+                <li <eq name="i" value="$page" >class="active"</eq>>
+                  <a href="{:U('Home/Apply/index/',array('kw'=>$kw,'jt'=>$jt,'at'=>$at,'page'=>($i),'sl'=>$sl,'t'=>$t))}">{$i}</a>
+                </li>
+              </for>
+              <li>
+                <a href="#">...</a>
+              </li>
+              <li <eq name="page" value="$pageCount" >class="active"</eq>>
+                <a href="{:U('Home/Apply/index/',array('kw'=>$kw,'jt'=>$jt,'at'=>$at,'page'=>$pageCount,'sl'=>$sl,'t'=>$t))}">{$pageCount}</a>
+              </li>
+            <elseif condition="($pageCount gt 9) AND (($pageCount-$page) lt 4)" />
+              <li <eq name="page" value="1" >class="active"</eq>>
+                <a href="{:U('Home/Apply/index/',array('kw'=>$kw,'jt'=>$jt,'at'=>$at,'page'=>1,'sl'=>$sl,'t'=>$t))}">1</a>
+              </li>
+              <li>
+                <a href="#">...</a>
+              </li>
+              <for start="($pageCount-5)" end="($pageCount)">
+                <li <eq name="i" value="$page" >class="active"</eq>>
+                  <a href="{:U('Home/Apply/index/',array('kw'=>$kw,'jt'=>$jt,'at'=>$at,'page'=>($i),'sl'=>$sl,'t'=>$t))}">{$i}</a>
+                </li>
+              </for>              
+              <li <eq name="page" value="$pageCount" >class="active"</eq>>
+                <a href="{:U('Home/Apply/index/',array('kw'=>$kw,'jt'=>$jt,'at'=>$at,'page'=>$pageCount,'sl'=>$sl,'t'=>$t))}">{$pageCount}</a>
+              </li>
+            </if>
+            <if condition="($page eq $pageCount) OR ($pageCount eq '0')">
+              <li class="disabled">
+              <a href="#">
+                <span aria-hidden="true">下一页</span>
+              </a>
+            </li>
+            <else />
+              <li>
+                <a href="{:U('Home/Apply/index/',array('kw'=>$kw,'jt'=>$jt,'at'=>$at,'page'=>($page+1),'sl'=>$sl,'t'=>$t))}">
+                  <span aria-hidden="true">下一页</span>
+                </a>
+              </li>
+            </if>
+          </ul>
+        </nav>
+      </div>
+      <!-- 分页结束 -->
+    </div>
+  </block>
+  <!-- 左边结束 -->
+  <!-- 右边优秀企业展示 -->
+  <block name="right">
+    <div class="col-md-3  visible-md-block visible-lg-block">
+      <div class="list-group">
+        <volist name="broList" id="bro">
+          <a href="{$bro.url}" class="list-group-item" target="_blank">
+            <img src="__PUBLIC__/Admin/uploads/broen/logo/{$bro.logo}" title="{$bro.en_name}" alt="企业图标" />
+          </a>
+        </volist>
+      </div>
+    </div>
+  </block>
+  <!-- 企业模板结束 -->
+  <!-- 底部版权 -->
+  <block name="footer">
+    <include file="Common:footer" />
+  </block>
+  <!-- 底部版权结束 -->

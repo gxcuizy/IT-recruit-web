@@ -1,0 +1,404 @@
+<extend name="Common/core"/>
+<block name="js">
+  <script type="text/javascript">
+      $(function(){
+           //加载一级城市信息
+            $.ajax({
+                type:"POST",             //发送方式
+                url :"__URL__/doload",  //请求地址
+                data:"pid=0",                //请求数据
+                async:true,             //是否异步
+                dataType:"json",        //响应数据类型
+                success:function(data){ //成功回调函数
+                    //遍历结果，拼装下拉项
+                    var str = "";
+                    for(var i=0;i<data.length;i++){
+                        str +="<option sid='"+data[i].id+"' value='"+data[i].name+"'>";
+                        str +=data[i].name;
+                        str +="</option>";
+                    }
+                    //添加下拉项中
+                    $("select[name='province']").append(str);
+                },
+            });
+            //加载二级城市信息
+            $("select[name='province']").change(function(){
+              var ob = this;
+              var sid=$("select[name='province'] option:selected").attr("sid");
+              $(".city~option").remove();
+              $(".county~option").remove();
+              $.ajax({
+                      type:"POST",             //发送方式
+                      url :"__URL__/doload",  //请求地址
+                      data:"pid="+sid,   //请求数据
+                      async:true,             //是否异步
+                      dataType:"json",        //响应数据类型
+                      success:function(data){ //成功回调函数
+                          if(data==null){
+                              return;
+                          }
+                          var str = "";
+                          //遍历结果，拼装下拉项
+                          for(var i=0;i<data.length;i++){
+                              str +="<option sid='"+data[i].id+"' value='"+data[i].name+"'>";
+                              str +=data[i].name;
+                              str +="</option>";
+                          }
+                           //添加下拉项中
+                          $("select[name='city']").append(str);
+                      },
+                  });
+            });
+
+           //加载三级城市信息
+            $("select[name='city']").change(function(){
+              var ob = this;
+              var sid=$("select[name='city'] option:selected").attr("sid");
+              $(".county~option").remove();
+              $.ajax({
+                      type:"POST",             //发送方式
+                      url :"__URL__/doload",  //请求地址
+                      data:"pid="+sid,   //请求数据
+                      async:true,             //是否异步
+                      dataType:"json",        //响应数据类型
+                      success:function(data){ //成功回调函数
+                          if(data==null){
+                              return;
+                          }
+                          var str = "";
+                          //遍历结果，拼装下拉项
+                          for(var i=0;i<data.length;i++){
+                              str +="<option value='"+data[i].name+"'>";
+                              str +=data[i].name;
+                              str +="</option>";
+                          }
+                           //添加下拉项中
+                          $("select[name='county']").append(str);
+                      },
+                  });
+            });
+          
+           //验证姓名
+          $("input[name='name']").blur(function(){
+              var name = $("input[name='name']").val();
+              $("input[name='name']+span").remove();
+              if(name.length<1){
+                  var str = "<span style='color:red'>姓名不能为空!</span>";
+                  $("input[name='name']").after(str);
+                   return false;
+                  }else{
+                   return true;
+                  }
+          });
+          //验证年龄
+          $("input[name='age']").blur(function(){
+              var age = $("input[name='age']").val();
+              $("input[name='age']+span").remove();
+              if(age.match(/^\d{1,2}$/)==null){
+                  var str = "<span style='color:red'>年龄格式错误</span>";
+                  $("input[name='age']").after(str);
+                  $("#form").attr("onsubmit","return false");
+              }else{
+                   $("#form").attr("onsubmit","");
+              }
+          });
+
+          //验证邮箱
+          $("input[name='email']").blur(function(){
+              var age = $("input[name='email']").val();
+              $("input[name='email']+span").remove();
+              if(age.match(/^\w+@\w+\.com$/)==null){
+                  var str = "<span style='color:red'>邮箱格式错误</span>";
+                  $("input[name='email']").after(str);
+                   $("#form").attr("onsubmit","return false");
+                  }else{
+                       $("#form").attr("onsubmit","");
+                  }
+          });
+
+         
+
+          //验证手机号
+           $("input[name='phone']").blur(function(){
+              var name = $("input[name='phone']").val();
+              $("input[name='phone']+span").remove();
+              if(name.match(/^1\d{10}$/)==null){
+                  var str = "<span style='color:red'>手机号为11位有效数字!</span>";
+                  $("input[name='phone']").after(str);
+                   $("#form").attr("onsubmit","return false");
+                  }else{
+                       $("#form").attr("onsubmit","");
+                  }
+          });
+
+          //验证毕业学校
+          $("input[name='school']").blur(function(){
+              var school = $("input[name='school']").val();
+              $("input[name='school']+span").remove();
+              if(school.length<1){
+                  var str = "<span style='color:red'>学校不能为空!</span>";
+                  $("input[name='school']").after(str);
+                   $("#form").attr("onsubmit","return false");
+                  }else{
+                       $("#form").attr("onsubmit","");
+                  }
+          });
+
+          //验证工作经历
+          $("textarea[name='work_experience']").blur(function(){
+              var school = $("textarea[name='work_experience']").val();
+              $("textarea[name='work_experience']+span").remove();
+              if(school.length<1){
+                  var str = "<span style='color:red'>工作经历不能为空!</span>";
+                  $("textarea[name='work_experience']").after(str);
+                   $("#form").attr("onsubmit","return false");
+                  }else{
+                       $("#form").attr("onsubmit","");
+                  }
+          });
+
+          //验证项目开发经验
+           $("textarea[name='dev_experience']").blur(function(){
+              var school = $("textarea[name='dev_experience']").val();
+              $("textarea[name='dev_experience']+span").remove();
+              if(school.length<1){
+                  var str = "<span style='color:red'>项目开发经验不能为空!</span>";
+                  $("textarea[name='dev_experience']").after(str);
+                   $("#form").attr("onsubmit","return false");
+                  }else{
+                       $("#form").attr("onsubmit","");
+                  }
+          });
+
+            //验证自我评价
+           $("textarea[name='self_evaluation']").blur(function(){
+              var school = $("textarea[name='self_evaluation']").val();
+              $("textarea[name='self_evaluation']+span").remove();
+              if(school.length<1){
+                  var str = "<span style='color:red'>自我评价不能为空!</span>";
+                  $("textarea[name='self_evaluation']").after(str);
+                   $("#form").attr("onsubmit","return false");
+                  }else{
+                       $("#form").attr("onsubmit","");
+                  }
+          });
+    });     
+  </script>
+</block>
+<block name="title"><title>更新简历-{$sysInfo.title}</title></block>
+    <!-- 导入导航 -->
+    <block name="nav">
+      <include file="Common/header"/>
+    </block>
+    <!-- 导航结束 -->
+    <!-- 右边主体 -->
+      <!-- 左边导航开始 -->
+    <block name="left">
+      <div class="col-md-3" style="border-top:1px solid #ddd;">
+        <div style="margin-top:10px;">
+          <img src="{$path}/uploads/jobhunter/photo/{$_SESSION['ITUser']['photo']}" alt="头像" class="img-circle center-block" width="150" height="150">
+          <p class="text-muted text-center" style="margin-top:10px;"><strong>{$_SESSION['ITUser']['username']}</strong></p>
+        </div>
+        <ul class="nav nav-pills nav-stacked">
+          <li role="presentation" class="active"><a href="{:U('Home/Jobhunter/index')}">个人简历</a></li>
+          <li role="presentation"><a href="{:U('Home/Jobhunter/applyList')}">职位管理</a></li>
+          <li role="presentation"><a href="{:U('Home/Jobhunter/favoritesJob')}">收藏列表</a></li>
+          <li role="presentation"><a href="{:U('Home/Jobhunter/updatePw')}">修改密码</a></li>
+        </ul>
+      </div>
+    </block>
+      <!-- 左边导航结束 -->
+      <!-- 右边主体 -->
+    <block name="main">
+      <div class="col-md-9 resume-border" >
+        <div class="online-resume">
+          <h3>更新我的简历</h3>
+        </div>
+        <ul class="nav nav-tabs">
+          <li role="presentation"><a href="{:U('Home/Jobhunter/index')}">个人简历</a></li>
+          <li role="presentation" class="active"><a href="{:U('Home/Jobhunter/updateResume')}">更新简历</a></li>
+        </ul>
+        <form class="form-horizontal" id="form" method="post"  action="{:U('Home/Jobhunter/checkResume')}" enctype="multipart/form-data">
+          <div class="alert alert-info col-md-12" role="alert" id="umessage">基本信息</div>
+          <div class="col-md-12">
+            <div class="col-md-9">
+              <div class="form-group">
+                <label for="name" class="col-sm-2 control-label">*姓&nbsp;&nbsp;&nbsp;&nbsp;名</label>
+                <div class="col-sm-10">
+                  <input type="text" name="name" value="{$resume.name}" class="form-control" id="name" placeholder="请输入您的姓名">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="age" class="col-sm-2 control-label">*年&nbsp;&nbsp;&nbsp;&nbsp;龄</label>
+                <div class="col-sm-4">
+                  <input type="text" name="age" value="{$resume.age}" class="form-control" id="age" placeholder="请输入您的年龄">
+                </div>
+                <label for="sex" class="col-sm-2 control-label">*性&nbsp;&nbsp;&nbsp;&nbsp;别</label>
+                <div class="col-sm-4">
+                  <select class="form-control" name="sex">
+                    <option value="1" <if condition="$resume.sex eq 1">selected='selected'</if>>男</option>
+                    <option value="0" <if condition="$resume.sex eq 0">selected='selected'</if>>女</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="phone" class="col-sm-2 control-label">*手&nbsp;&nbsp;&nbsp;&nbsp;机</label>
+                <div class="col-sm-10">
+                  <input type="text" name="phone" value="{$resume.phone}"  class="form-control" id="phone" placeholder="请输入您的手机号码">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="email" class="col-sm-2 control-label">*邮&nbsp;&nbsp;&nbsp;&nbsp;箱</label>
+                <div class="col-sm-10">
+                  <input type="text" name="email" value="{$resume.email}" class="form-control" id="email" placeholder="请输入您的邮箱地址">
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <label for="uploadPhoto">
+              <img src="{$path}/uploads/jobhunter/photo/{$resume.photo}" alt="个人照片" class="img-thumbnail center-block">
+              <input type="file" id="uploadPhoto" name="photo" style="margin-top:5px;width:100%;">
+            </div>
+          </div>
+          <!-- 基本信息结束 -->
+          <div class="alert alert-info col-md-12" role="alert" id="umessage">个人信息</div>
+          <div class="col-md-12">
+            <div class="col-md-9">
+              <div class="form-group">
+                <label for="school" class="col-sm-2 control-label">*毕业院校</label>
+                <div class="col-sm-10">
+                  <input type="text" name='school' value="{$resume.school}" class="form-control" id="school" placeholder="请输入您毕业学校名">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="marry" class="col-sm-2 control-label">*婚姻状况</label>
+                <div class="col-sm-4">
+                  <select class="form-control" name="is_marry">
+                    <option value="">请选择婚姻状态</option>
+                    <option value="0" <if condition="$resume.is_marry eq 0">selected='selected'</if>>保密</option>
+                    <option value="1" <if condition="$resume.is_marry eq 1">selected='selected'</if>>未婚</option>
+                    <option value="2" <if condition="$resume.is_marry eq 2">selected='selected'</if>>已婚</option>
+                  </select>
+                </div>
+                <label for="education" class="col-sm-2 control-label">*最高学历</label>
+                <div class="col-sm-4">
+                  <select class="form-control" name="education">
+                    <option value="">请选择学历</option>
+                    <option value="博士" <eq name="resume.education" value="博士">selected='selected'</eq>>博士</option>
+                    <option value="研究生" <eq name="resume.education" value="研究生">selected='selected'</eq>>研究生</option>
+                    <option value="本科" <eq name="resume.education" value="本科">selected='selected'</eq>>本科</option>
+                    <option value="专科" <eq name="resume.education" value="专科">selected='selected'</eq>>专科</option>
+                    <option value="高中" <eq name="resume.education" value="高中">selected='selected'</eq>>高中</option>
+                    <option value="高中以下" <eq name="resume.education" value="高中以下">selected='selected'</eq>>高中以下</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="origin" class="col-sm-2 control-label">*籍&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;贯</label>
+                <div class="col-sm-10">
+                  <div class="col-md-4">
+                    <select class="form-control" name="province" id="province">
+                      <option value="-1" class="province">请选择</option>
+                      <option value="{$resume.province}" selected='selected'>{$resume.province}</option>
+                    </select>
+                  </div>
+                  <div class="col-md-4">
+                    <select class="form-control" name="city" id="city">
+                      <option value="-1" class="city">请选择</option>
+                      <volist name="city" id="city">
+                        <option value="{$city.name}" sid="{$city.id}" <if condition="$city.name eq $resume['city']">selected='selected'</if>>{$city.name}</option>
+                      </volist>
+                    </select>
+                  </div>
+                  <div class="col-md-4">
+                    <select class="form-control" name="county" id="county">
+                      <option value="-1" class="county">请选择</option>
+                      <volist name="county" id="county">
+                        <option value="{$county.name}" sid="{$county.id}" <if condition="$county.name eq $resume['county']">selected='selected'</if>>{$county.name}</option>
+                      </volist>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              
+            </div>
+          </div>
+          <!-- 个人信息结束 -->
+          <!-- 工作经验 -->
+          <div class="alert alert-info col-md-12" role="alert" id="umessage">工作经验</div>
+          <div class="col-md-12">
+            <div class="col-md-9">
+              <div class="form-group">
+                <label for="workExperience" class="col-sm-2 control-label">*工作状态</label>
+                <div class="col-sm-4">
+                  <select class="form-control" name="work_status">
+                    <option value="">请选择工作状态</option>
+                    <option value="0" <eq name="resume.work_status" value="0">selected='selected'</eq>>在职，看看新机会</option>
+                    <option value="1" <eq name="resume.work_status" value="1">selected='selected'</eq>>在职，急寻新工作</option>
+                    <option value="2" <eq name="resume.work_status" value="2">selected='selected'</eq>>在职，暂无跳槽打算</option>
+                    <option value="3" <eq name="resume.work_status" value="3">selected='selected'</eq>>离职，正在找工作</option>
+                  </select>
+                </div>
+                <label for="loveJob" class="col-sm-2 control-label">*期望职位</label>
+                <div class="col-sm-4">
+                  <input type="text" name="love_job" value="{$resume.love_job}" class="form-control" id="loveJob" placeholder="请输入您的期望职位">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="devExperience" class="col-sm-2 control-label"><span>*</span>工作经历</label>
+                <textarea class="form-control" name="work_experience" rows="7" style="resize:none;" placeholder="请简单的描述一下您的工作经历，没有可写无">{$resume.work_experience}</textarea>
+              </div>
+            </div>
+            <div class="col-md-3">
+
+            </div>
+          </div>
+          <!-- 工作经验结束 -->
+          <!-- 项目开发经验 -->
+          <div class="alert alert-info col-md-12" role="alert" id="umessage">项目开发经验</div>
+          <div class="col-md-12">
+            <div class="col-md-9">
+              <div class="form-group">
+                <textarea class="form-control" rows="7" style="resize:none;" name="dev_experience" id="devExperience" placeholder="请简单的描述一下您有参与或组织的项目开发经历">{$resume.dev_experience}</textarea>
+              </div>
+            </div>
+            <div class="col-md-3">
+
+            </div>
+          </div>
+          <!-- 项目开发经验结束 -->
+          <!-- 自我评价面板 -->
+          <div class="alert alert-info col-md-12" role="alert" id="umessage">自我评价</div>
+          <div class="col-md-12">
+            <div class="col-md-9">
+              <div class="form-group">
+                <textarea class="form-control" rows="7" style="resize:none;" name="self_evaluation" id="selfEvaluation" placeholder="请用150字以上做一个简单的自我评价和认识">{$resume.self_evaluation}</textarea>
+              </div>
+            </div>
+            <div class="col-md-3">
+
+            </div>
+          </div>
+          <div class="alert alert-info col-md-12" role="alert" id="umessage" style="height:55px;">
+            简历是否公开：
+            <label for="radio0">
+              <input type="radio" id="radio0" name="is_show" value="0" <if condition="$resume.is_show eq '0'">checked='checked'</if>>不公开
+            </lable>
+            <label for="radio1">
+              <input type="radio" style="margin-left:10px" id="radio1" name="is_show" value="1" <if condition="$resume.is_show eq '1'">checked='checked'</if>>公开
+            </label>
+          </div>
+          <!-- 自我评价结束 -->
+          <div class="col-md-12">
+            <button type="submit" class="btn btn-primary btn-block" style="margin-bottom:10px;">保存</button>
+          </div>
+        </form>
+      </div>
+    </block>
+      <!-- 底部版权 -->
+    <block name="footer">
+      <include file="Common/footer"/>
+    </block>
+      <!-- 底部版权结束 -->

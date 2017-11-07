@@ -1,0 +1,43 @@
+<div class="pageContent">
+	<form method="post" action="__URL__/save/navTabId/systemInfo/callbackType/closeCurrent"  class="pageForm required-validate" 
+		onsubmit="return validateCallback(this,dialogAjaxDone);">
+		<div class="pageFormContent" layoutH="60">
+			<volist name="systemInfo" id="vo">
+				<dl>
+					<dt>网站标题：</dt>
+					<dd>
+						<input type="text" class="required" value="{$vo.title}"  style="width:100%" name="title"/>
+						<input type="hidden" value="{$vo.id}" name="id" />
+					</dd>
+				</dl>
+				<dl>
+					<dt>网站页脚地址：</dt>
+					<dd>
+						<input type="text" class="required" value="{$vo.footer_address}"  style="width:100%" name="footer_address"/>
+					</dd>
+				</dl>
+				<dl>
+					<dt>网站页脚版权：</dt>
+					<dd>
+						<input type="text" class="required" value="{$vo.footer_copyright}"  style="width:100%" name="footer_copyright"/>
+					</dd>
+				</dl>
+				<dl>
+					<dt>网站运行状态：</dt>
+					<dd>
+						<input type="radio" name="web_status" value='1' <if condition="$vo.web_status eq 1">checked</if> />开启
+						<input type="radio" name="web_status" value='0' <if condition="$vo.web_status eq 0">checked</if> />关闭
+						<input type="hidden" value="{$vo.id}" name="id" />
+					</dd>
+				</dl>
+			</volist>
+		</div>
+		<div class="formBar">
+			<ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">设置</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+</div>
+

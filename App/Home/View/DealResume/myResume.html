@@ -1,0 +1,150 @@
+<extend name="Common:core" />
+  <block name="title">
+    <title>应聘者简历-{$sysInfo.title}</title>
+  </block>
+  <!-- 导航开始 -->
+  <block name="nav">
+    <include file="Common/header"/>
+  </block>
+  <!-- 导航结束 -->
+  <!-- 左边导航开始 -->
+  <block name="left">
+    <div class="col-md-3" style="border-top:1px solid #ddd;">
+      <div style="margin-top:10px;">
+        <img src="{$path}/uploads/enterprise/photo/{$_SESSION['ITUser']['en_photo']}" alt="头像" class="img-circle center-block" width="160" height="160" style="margin-bottom:10px;">
+        <p class="text-muted text-center"><strong>{$_SESSION['ITUser']['en_name']}</strong></p>
+      </div>
+      <ul class="nav nav-pills nav-stacked">
+        <li role="presentation"><a href="{:U('Home/Enterprise/index')}">个人中心</a></li>
+        <li role="presentation"><a href="{:U('Home/EnApply/listApply')}">招聘管理</a></li>
+        <li role="presentation"  class="active"><a href="{:U('Home/DealResume/index')}">简历管理</a></li>
+        <li role="presentation"><a href="{:U('Home/Enterprise/setEnInfo')}">企业管理</a></li>
+        <li role="presentation"><a href="{:U('Home/Enterprise/updatePw')}">修改密码</a></li>
+      </ul>
+    </div>
+  </block>
+  <!-- 左边导航结束 -->
+  <!-- 右边主体 -->
+  <block name="main">
+    <div class="col-md-9 resume-border">
+      <div class="online-resume">
+        <h3>应聘者简历</h3>
+      </div>
+      <!-- 简历右边导航选项卡 -->
+      <ul class="nav nav-tabs">
+        <li role="presentation"><a href="{:U('Home/DealResume/index')}">简历列表</a></li>
+        <li role="presentation"><a href="{:U('Home/Invite/inviteEn')}">邀请面试列表</a></li>
+        <li role="presentation" class="active"><a href="{:U('Home/DealResume/myResume','id='.$resume['id'])}">简历详情</a></li>
+      </ul>
+      <!-- 简历右边导航选项卡结束 -->
+      <!-- 我的简历信息 -->
+      <div class="alert alert-info" role="alert" id="umessage">
+        <span>应聘者简历详情</span>
+      </div>
+      <!-- 姓名、公司、照片等信息面板 -->
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <div class="media">
+            <div class="media-left">
+              <img src="{$path}/uploads/jobhunter/photo/{$resume.photo}" alt="" width="100">
+            </div>
+            <div class="media-body">
+              <h3 style="margin-top:5px;">{$resume.name}</h3>
+              <h5 style="margin-top:15px;">期望职位：{$resume.love_job}</h5>
+              <h5 style="margin-top:20px;">原籍：{$resume.province}{$resume.city}{$resume.county}</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 姓名、公司、照片面板结束 -->
+      <!-- 基本信息 -->
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <span class="glyphicon glyphicon-user">&nbsp;<strong>基本信息</strong></span>
+        </div>
+        <div class="panel-body">
+          <div class="form-group">
+            <div class="col-md-4">
+              <label>电话：</label>
+              <span>{$resume.phone}</span>
+            </div>
+            <div class="col-md-4">
+              <label>邮箱：</label>
+              <span>{$resume.email}</span>
+            </div>
+            <div class="col-md-4">
+              <label>年龄：</label>
+              <span>{$resume.age}</span>
+            </div>
+            <div class="col-md-4">
+              <label>性别：</label>
+              <if condition="$resume.sex eq 0">女<else/>男</if>
+            </div>
+            <div class="col-md-4">
+              <label>婚姻状况：</label>
+              <span>
+                  <if condition="$resume.is_marry eq 0">保密</if>
+                  <if condition="$resume.is_marry eq 1">未婚</if>
+                  <if condition="$resume.is_marry eq 2">已婚</if>
+              </span>
+            </div>
+            <div class="col-md-4">
+              <label>学历：</label>
+              <span>{$resume.education}</span>
+            </div>
+             <div class="col-md-4">
+              <label>毕业学校：</label>
+              <span>{$resume.school}</span>
+            </div>
+             <div class="col-md-4">
+              <label>工作状态：</label>
+              <span>
+                <switch name="resume.work_status">
+                    <case value="0">在职，看看新机会</case>
+                    <case value="1">在职，急寻新工作</case>
+                    <case value="2">在职，暂无跳槽打算</case>
+                    <case value="3">离职，正在找工作</case>
+                </switch>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 基本信息面板结束 -->
+      <!-- 工作经历 -->
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <span class="glyphicon glyphicon-road">&nbsp;<strong>工作经历</strong></span>
+        </div>
+        <div class="panel-body">
+          {$resume.work_experience}
+        </div>
+      </div>
+      <!-- 工作经历面板结束 -->
+      <!-- 项目开发经验 -->
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <span class="glyphicon glyphicon-blackboard">&nbsp;<strong>项目开发经验</strong></span>
+        </div>
+        <div class="panel-body">
+          {$resume.dev_experience}
+        </div>
+      </div>
+      <!-- 项目开发经验面板结束 -->
+       <!-- 自我评价 -->
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <span class="glyphicon glyphicon-eye-open">&nbsp;<strong>自我评价</strong></span>
+        </div>
+        <div class="panel-body">
+          {$resume.self_evaluation}
+        </div>
+      </div>
+      <!-- 自我评价面板结束 -->
+    </div>
+  </block>
+  <!-- 底部版权 -->
+  <block name="footer">
+    <include file="Common/footer"/>
+  </block>
+  <!-- 底部版权结束 -->

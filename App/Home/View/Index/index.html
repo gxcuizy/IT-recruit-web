@@ -1,0 +1,305 @@
+<extend name="Common:index" />
+  <block name="js">
+    <script type="text/javascript">
+      $(function(){
+        $("#type").change(function(){
+          var type=$("#type option:selected").val();
+          if(type=='0'){
+            $("#job").css("display","block");
+            $("#ent").css("display","none");
+            $("#resume").css("display","none");
+            $("#myform").attr("action","{:U('Apply/index')}");
+            $("#input").attr("placeholder","请输入职位名称：如PHP高级工程师等");
+          }else if(type=='1'){
+            $("#ent").css("display","block");
+            $("#job").css("display","none");
+            $("#resume").css("display","none");
+            $("#myform").attr("action","{:U('EnterpriseList/index')}");
+            $("#input").attr("placeholder","请输入企业名称：如兄弟连IT教育等");
+          }else if(type=='2'){
+            $("#resume").css("display","block");
+            $("#ent").css("display","none");
+            $("#job").css("display","none");
+            $("#myform").attr("action","{:U('Resume/index')}");
+            $("#input").attr("placeholder","请输入简历姓名：如马尧等");
+          }
+        });
+      });
+    </script>
+  </block>
+  <!-- 标题 -->
+  <block name="title">
+    <title>{$sysInfo.title}-欢迎您</title>
+  </block>
+  <!-- 标题结束 -->
+  <!-- 导航开始 -->
+  <block name="nav">
+    <include file="./Common/header" />
+  </block>
+  <!-- 导航结束 -->
+  <!-- 滚动屏幕开始 -->
+  <block name="slide">
+    <div class="container-fluid" style="background-color:#eeeeee;">
+      <div class="container">
+        <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+          <!-- Indicators -->
+          <ol class="carousel-indicators">
+            <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+            <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+            <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+          </ol>
+          <!-- Wrapper for slides -->
+          <div class="carousel-inner" role="listbox">
+            <volist name="litt" id="vv">
+            <if condition="$vv.img_position eq 0">  
+                <div class="item active">
+                  <img src="{$path}/uploads/slides/{$vv.image}" alt="{$vv.img_content}">
+                  <div class="carousel-caption">
+                    <h3>{$vv.img_title}</h3>
+                  </div>
+                </div>
+            </if>
+            </volist>
+            <volist name="litt" id="vv">
+            <if condition="($vv.img_position gt 0) AND ($vv.img_position lt 3)">       
+              <div class="item">
+                <img src="{$path}/uploads/slides/{$vv.image}" style="height:300px;width:1140px" alt="{$vv.img_content}">
+                <div class="carousel-caption">
+                  <h3>{$vv.img_title}</h3>
+                </div>
+              </div>
+            </if>
+            </volist>
+          </div>
+          <!-- Controls -->
+          <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+          </a>
+          <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </block>
+  <!-- 滚动屏幕结束 -->
+  <!-- 页面主体  -->
+  <div class="container">
+  <!-- 搜索框 -->
+  <block name="search">
+    <div class="row" style="margin-top:20px;">
+      <div class="col-lg-9">
+        <form action="{:U('Apply/index')}" method="get" id="myform">
+          <div class="input-group input-group-lg">
+            <input type="text" name="kw" class="form-control" id="input" placeholder="请输入职位关键词：如PHP高级工程师等"/>
+            <span class="input-group-btn input-group-lg">
+              <select name="type" style="width:111px;" class="form-control" id="type">
+                <option value="0" selected>按职位</option>
+                <option value="1">按企业</option>
+                <option value="2">按简历</option>
+              </select>
+            </span>
+            <span class="input-group-btn">
+              <button class="btn btn-primary" type="submit">
+                <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+              搜索</button>
+            </span>
+          </div>
+        </form>
+      </div>
+      <div class="col-lg-3 visible-lg-block">
+        <div class="panel panel-info">
+          <div class="panel-body">
+          本网站在招职位<strong> {$count} </strong>个
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 热门关键字 -->
+    <div class="row visible-md-block visible-lg-block">
+      <p class="text-muted" style="margin:-20px 0 10px 20px;" id="job">热门职位搜索：
+          <volist name="hot" id="hot">
+              <a href="{:U('Apply/index',array('kw'=>$hot['hot_name']))}">{$hot.hot_name}&nbsp;&nbsp;&nbsp;</a> 
+          </volist>
+      </p>
+      <p class="text-muted" style="margin:-20px 0 10px 20px;display:none;" id="ent">热门企业搜索：
+          <volist name="hotEn" id="hotEn">
+              <a href="{:U('EnterpriseList/index',array('kw'=>$hotEn['hot_name']))}">{$hotEn.hot_name}&nbsp;&nbsp;&nbsp;</a> 
+          </volist>
+      </p>
+      <p class="text-muted" style="margin:-20px 0 10px 20px;display:none;" id="resume">热门简历搜索：
+          <volist name="hotRe" id="hotRe">
+              <a href="{:U('Resume/index',array('kw'=>$hotRe['hot_name']))}">{$hotRe.hot_name}&nbsp;&nbsp;&nbsp;</a> 
+          </volist>
+      </p>
+    </div>
+    <!-- 职业关键字 -->
+    <div id="did" style="display:none;" class="panel panel-default">
+        <div>
+            <div>技术类:</div>
+            <volist name="type0" id="type0">
+              <div><a href="{:U('Apply/index',array('jt'=>$type0['name']))}">{$type0.name}</a></div>
+            </volist>
+        </div>
+        <div>
+            <div>产品类:</div>
+            <volist name="type1" id="type1">
+              <div><a href="{:U('Apply/index',array('jt'=>$type1['name']))}">{$type1.name}</a></div>
+            </volist>
+        </div>
+        <div>
+            <div>设计类:</div>
+            <volist name="type2" id="type2">
+              <div><a href="{:U('Apply/index',array('jt'=>$type2['name']))}">{$type2.name}</a></div>
+            </volist>
+        </div>
+        <div>
+            <div>运营类:</div>
+            <volist name="type3" id="type3">
+              <div><a href="{:U('Apply/index',array('jt'=>$type3['name']))}">{$type3.name}</a></div>
+            </volist>
+        </div>
+    </div>
+    <!-- 搜索框结束 -->
+  </block>
+  <!-- 页面主体 -->
+  <block name="main">
+    <!-- 职位推荐标题 -->
+    <div class="row">
+        <h3 style="margin-left:20px;"><span class="glyphicon glyphicon-screenshot">最新职位推荐</span></h3>
+    </div>
+    <!-- 职位推荐标题结束 -->
+    <!-- 各行业招聘模板 -->
+    <div class="row">
+      <!-- 技术模块 -->
+      <div class="col-md-6">
+        <div class="panel panel-default">
+          <!-- Default panel contents -->
+          <div class="panel-heading"><strong>技术类招聘（{$applyCount0}个职位）</strong><span style="float:right;"><a href="{:U('/Apply/index',array('at'=>0))}">更多</a></span></div>
+          <!-- Table -->
+          <div class="table-responsive">
+            <table class="table">
+              <tr>
+                <th>职位名称</th>
+                <th>公司名称</th>
+                <th>薪资</th>
+                <th>发布时间</th>
+              </tr>
+              <volist name="list0" id="vo">
+                <if condition="($vo.apply_type eq '0') AND ($vo.apply_status eq '0')">
+                  <tr>
+                    <td><a href="{:U('Home/Apply/applyDetails','id='.$vo['id'])}">{$vo.job_name}</a></td>
+                    <td><a href="{:U('Home/EnterpriseList/enterprise','id='.$vo['eid'])}">{$vo.en_name}</a></td>
+                    <td>{$vo.salary}</td>
+                    <td>{$vo.publish_time|date="Y-m-d",###}</td>
+                  </tr>
+                  <else/>
+                </if>
+             </volist>
+            </table>
+          </div>
+        </div>
+      </div>
+      <!-- 产品模块 -->
+      <div class="col-md-6">
+        <div class="panel panel-default">
+          <!-- Default panel contents -->
+          <div class="panel-heading"><strong>产品类招聘（{$applyCount1}个职位）</strong><span style="float:right;"><a href="{:U('/Apply/index',array('at'=>1))}">更多</a></span></div>
+          <!-- Table -->
+          <div class="table-responsive">
+            <table class="table">
+              <tr>
+                <th>职位名称</th>
+                <th>公司名称</th>
+                <th>薪资</th>
+                <th>发布时间</th>
+              </tr>
+              <volist name="list1" id="vo">
+                <if condition="($vo.apply_type eq '1') AND ($vo.apply_status eq '0')">
+                  <tr>
+                    <td><a href="{:U('Home/Apply/applyDetails','id='.$vo['id'])}">{$vo.job_name}</a></td>
+                    <td><a href="{:U('Home/EnterpriseList/enterprise','id='.$vo['eid'])}">{$vo.en_name}</a></td>
+                    <td>{$vo.salary}</td>
+                    <td>{$vo.publish_time|date="Y-m-d",###}</td>
+                  </tr>
+                  <else/>
+                </if>
+             </volist>
+            </table>
+          </div>
+        </div>
+      </div>
+      <!-- 设计模块 -->
+      <div class="col-md-6">
+        <div class="panel panel-default">
+          <!-- Default panel contents -->
+          <div class="panel-heading"><strong>设计类招聘（{$applyCount2}个职位）</strong><span style="float:right;"><a href="{:U('/Apply/index',array('at'=>2))}">更多</a></span></div>
+          <!-- Table -->
+          <div class="table-responsive">
+            <table class="table">
+              <tr>
+                <th>职位名称</th>
+                <th>公司名称</th>
+                <th>薪资</th>
+                <th>发布时间</th>
+              </tr>
+              <volist name="list2" id="vo">
+                <if condition="($vo.apply_type eq '2') AND ($vo.apply_status eq '0')">
+                  <tr>
+                    <td><a href="{:U('Home/Apply/applyDetails','id='.$vo['id'])}">{$vo.job_name}</a></td>
+                    <td><a href="{:U('Home/EnterpriseList/enterprise','id='.$vo['eid'])}">{$vo.en_name}</a></td>
+                    <td>{$vo.salary}</td>
+                    <td>{$vo.publish_time|date="Y-m-d",###}</td>
+                  </tr>
+                  <else/>
+                </if>
+             </volist>
+            </table>
+          </div>
+        </div>
+      </div>
+      <!-- 运营模块 -->
+      <div class="col-md-6">
+        <div class="panel panel-default">
+          <!-- Default panel contents -->
+          <div class="panel-heading"><strong>运营类招聘（{$applyCount3}个职位）</strong><span style="float:right;"><a href="{:U('/Apply/index',array('at'=>3))}">更多</a></span></div>
+          <!-- Table -->
+          <div class="table-responsive">
+            <table class="table">
+              <tr>
+                <th>职位名称</th>
+                <th>公司名称</th>
+                <th>薪资</th>
+                <th>发布时间</th>
+              </tr>
+              <volist name="list3" id="vo">
+                <if condition="($vo.apply_type eq '3') AND ($vo.apply_status eq '0')">
+                  <tr>
+                    <td><a href="{:U('Home/Apply/applyDetails','id='.$vo['id'])}">{$vo.job_name}</a></td>
+                    <td><a href="{:U('Home/EnterpriseList/enterprise','id='.$vo['eid'])}">{$vo.en_name}</a></td>
+                    <td>{$vo.salary}</td>
+                    <td>{$vo.publish_time|date="Y-m-d",###}</td>
+                  </tr>
+                  <else/>
+                </if>
+             </volist>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </block>
+  <!-- 各行业招聘模板结束 -->
+  <!-- 页面主体结束 -->
+  <!-- 友情链接版权 -->
+  <block name="link">
+    <include file="Common:link" />
+  </block>
+  <!-- 友情链接板块结束 -->
+  <!-- 底部版权 -->
+  <block name="footer">
+    <include file="Common:footer" />
+  </block>
+  <!-- 底部版权结束 -->

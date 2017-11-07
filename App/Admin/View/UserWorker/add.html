@@ -1,0 +1,43 @@
+<div class="pageContent">
+	<form method="post" action="__URL__/insert/navTabId/listWorker/callbackType/closeCurrent"  class="pageForm required-validate" 
+		onsubmit="return validateCallback(this,dialogAjaxDone);">
+		<div class="pageFormContent" layoutH="58">
+			<dl>
+				<dt>用&nbsp;&nbsp;户&nbsp;&nbsp;名：</dt>
+				<dd><input type="text" class="required" minlength="2"  style="width:100%" name="username" alt="请输入用户名" /></dd>
+			</dl>
+			<dl>
+				<dt>手机号码：</dt>
+				<dd><input type="text" class="required phone" style="width:100%" name="contact" alt="请填写正确的手机号码" /></dd>
+			</dl>
+			<dl>
+				<dt>用户密码：</dt>
+				<dd><input type="password" minlength="6" maxlength="17" class="required" style="width:100%" name="password" alt="密码长度为6-17位" /></dd>
+			</dl>
+			<dl>
+				<dt>确认密码：</dt>
+				<dd><input type="password" minlength="6" maxlength="17" class="required" style="width:100%" name="repassword" alt="密码长度为6-17位" /></dd>
+			</dl>
+			<dl>
+				<dt>允许投递简历：</dt>
+				<dd>
+					<input type="radio" value="1" name="allow_admin" id="y" checked />允许
+					<input type="radio" value="0" name="allow_admin" id="n" />禁止
+				</dd>
+			</dl>
+			<dl>
+				<dd>
+					<input type="hidden" value="0" name="type"/>
+					<input type="hidden" value="<php>echo time();</php>" name="register_time"/>
+				</dd>
+			</dl>
+		</div>
+		<div class="formBar">
+			<ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">添加</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+</div>
+

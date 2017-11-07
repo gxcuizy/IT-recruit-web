@@ -1,0 +1,21 @@
+<div class="pageContent">
+	<form method="post" action="__URL__/update/navTabId/listResume/callbackType/closeCurrent" 
+		enctype="multipart/form-data" class="pageForm required-validate" 
+		onsubmit="return iframeCallback(this,dialogAjaxDone);">
+		<input type="hidden" name="id" value="{$vo.id}">
+		<div class="pageFormContent" layoutH="58">
+			<dl>
+				<dt>是否推荐：</dt>
+				<dd><input type="radio" class="required" name="is_recommend" value="0" <if condition="$vo.is_recommend eq 0">checked='checked'</if>/>不推荐   
+				<input type="radio" class="required" name="is_recommend" value="1" <if condition="$vo.is_recommend eq 1">checked='checked'</if>/>推荐</dd>
+			</dl>
+		</div>
+		<div class="formBar">
+			<ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">更改</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+</div>
+

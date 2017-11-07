@@ -1,0 +1,124 @@
+<extend name="Common:core" />
+  <block name="title">
+    <title>修改密码-{$sysInfo.title}</title>
+  </block>
+  <block name="js">
+    <script language="JavaScript">
+      $(function(){
+        //验证原密码输入
+        $("#nativePw").blur(function(){
+          if($(this).val().length<1){
+            $("#msgdiv").attr("style","display:block");
+            $("#msg").html(' 原密码不能为空！');
+          }else{
+            $("#msgdiv").attr("style","display:none");
+          }
+        });
+
+        //验证第一次密码输入
+        $("#newPw").blur(function(){
+          if($(this).val().length<6 || $(this).val().length>17){
+            $("#msgdiv").attr("style","display:block");
+            $("#msg").html(' 新密码长度为6-17个字符！');
+          }else if($("#againPw").val().length>0 && $(this).val()!=$("#againPw").val()){
+            $("#msgdiv").attr("style","display:block");
+            $("#msg").html(' 两次密码输入不一致！');
+          }else{
+             $("#msgdiv").attr("style","display:none");
+          }
+        });
+
+        //验证再次密码的输入并验证两次输入密码是否一致
+        $("#againPw").blur(function(){
+          if($(this).val().length<6 || $(this).val().length>17){
+            $("#msgdiv").attr("style","display:block");
+            $("#msg").html(' 再次新密码长度为6-17个字符！');
+          }else if($(this).val()!=$("#newPw").val()){
+             $("#msgdiv").attr("style","display:block");
+            $("#msg").html(' 两次密码输入不一致！');
+          }
+          else{
+             $("#msgdiv").attr("style","display:none");
+          }
+        }); 
+      });
+    </script>
+  </block>
+  <!-- 导航开始 -->
+  <block name="nav">
+    <include file="Common:header" />
+  </block>
+  <!-- 导航结束 -->
+  <!-- 左边导航开始 -->
+  <block name="left">
+    <div class="col-md-3" style="border-top:1px solid #ddd;">
+      <div style="margin-top:10px;">
+        <img src="{$path}/uploads/enterprise/photo/{$_SESSION['ITUser']['en_photo']}" alt="头像" class="img-circle center-block" width="160" height="160" style="margin-bottom:10px;">
+        <p class="text-muted text-center"><strong>{$_SESSION['ITUser']['en_name']}</strong></p>
+      </div>
+      <ul class="nav nav-pills nav-stacked">
+        <li role="presentation"><a href="{:U('Home/Enterprise/index')}">个人中心</a></li>
+        <li role="presentation"><a href="{:U('Home/EnApply/listApply')}">招聘管理</a></li>
+        <li role="presentation"><a href="{:U('Home/DealResume/index')}">简历管理</a></li>
+        <li role="presentation"><a href="{:U('Home/Enterprise/setEnInfo')}">企业管理</a></li>
+        <li role="presentation" class="active"><a href="{:U('Home/Enterprise/updatePw')}">修改密码</a></li>
+      </ul>
+    </div>
+  </block>
+  <!-- 左边导航结束 -->
+  <!-- 右边主体 -->
+  <block name="main">
+    <div class="col-md-9 resume-border">
+      <div class="online-resume">
+        <h3>修改个人账号登录密码</h3>
+      </div>
+      <!-- 简历右边导航选项卡 -->
+      <ul class="nav nav-tabs">
+        <li role="presentation" class="active"><a href="{:U('Home/Enterprise/updatePw')}">修改密码</a></li>
+      </ul>
+      <!-- 简历右边导航选项卡结束 -->
+      <!-- 修改密码 -->
+      <div class="container" style="margin-top:70px;margin-bottom:50px;">
+        <form class="form-horizontal" method="post" action="{:U('Home/Enterprise/resetPw')}">
+        <div class="form-group">
+          <label for="nativePw" class="col-md-offset-1 col-md-2 control-label">*原&nbsp;&nbsp;&nbsp;&nbsp;密&nbsp;&nbsp;&nbsp;&nbsp;码:</label>
+          <div class="col-md-4">
+            <input type="password" name="password" class="form-control" id="nativePw" placeholder="请输入原密码">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="newPw" class="col-md-offset-1 col-md-2 control-label">*新&nbsp;&nbsp;&nbsp;&nbsp;密&nbsp;&nbsp;&nbsp;&nbsp;码:</label>
+          <div class="col-md-4">
+            <input type="password" name="newPassword" class="form-control" id="newPw" placeholder="6-17位数字、字母，不支持空格">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="againPw" class="col-md-offset-1 col-md-2 control-label">*重复新密码:</label>
+          <div class="col-md-4">
+            <input type="password" name="againPassword" class="form-control" id="againPw" placeholder="请再次输入新密码">
+          </div>
+          <div class="form-group" id="msgdiv" style="display:none;">
+            <div class="col-md-offset-3 col-md-3">
+              <br />
+              <span id="msg" class="glyphicon glyphicon-warning-sign" style="color:red;"></span>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-md-offset-3 col-md-1">
+            <button type="submit" class="btn btn-info">确定修改</button>
+          </div>
+          <div class="col-md-1">
+            <button type="reset" class="btn btn-default">重置</button>
+          </div>
+        </div>
+      </form>
+      </div>
+      <!-- 修改密码结束 -->
+    </div>
+  </block>
+  <!-- 底部版权 -->
+  <block name="footer">
+    <include file="./Common/footer" />
+  </block>
+  <!-- 底部版权结束 -->

@@ -1,0 +1,182 @@
+<extend name="Common/list"/>
+
+    <block name="title"><title>简历列表-{$sysInfo.title}</title></block>
+    <block name="js">
+      <style type="text/css">
+        body { padding-top:60px;overflow-y:scroll; }
+        form,div{
+          margin:0;
+          padding:0;
+        }
+        .online-resume{
+          height:50px;
+          margin-top:50px;
+        }
+
+        .resume-border{
+          border:1px solid #dddddd;
+        }
+
+        #umessage{
+          margin-top:10px;
+          background-color:#eee;
+        }
+        .text-muted a:hover{
+          text-decoration: none;
+          color:#777777;
+        }
+        .text-muted a{
+          color:#777777;
+        }
+        DIV.meneame {
+          PADDING-RIGHT: 3px; PADDING-LEFT: 3px; FONT-SIZE: 20px; PADDING-BOTTOM: 3px; MARGIN: 3px; COLOR: #337AB7; PADDING-TOP: 3px; TEXT-ALIGN: center
+        }
+        DIV.meneame A {
+          BORDER-RIGHT: #DDDDDD 1px solid; PADDING-RIGHT: 10px; BACKGROUND-POSITION: 50% bottom; BORDER-TOP: #DDDDDD 1px solid; PADDING-LEFT: 10px;  PADDING-BOTTOM: 5px; BORDER-LEFT: #DDDDDD 1px solid; COLOR: #337AB7; MARGIN-RIGHT: 3px; PADDING-TOP: 5px; BORDER-BOTTOM: #DDDDDD 1px solid; TEXT-DECORATION: none
+        }
+        DIV.meneame A:hover {
+          BORDER-RIGHT: #DDDDDD 1px solid; BORDER-TOP: #DDDDDD 1px solid; BACKGROUND-IMAGE: none; BORDER-LEFT: #DDDDDD 1px solid; COLOR: #337AB7; BORDER-BOTTOM: #DDDDDD 1px solid; BACKGROUND-COLOR: #F5F5F5
+        }
+        DIV.meneame A:active {
+          BORDER-RIGHT: #DDDDDD 1px solid; BORDER-TOP: #DDDDDD 1px solid; BACKGROUND-IMAGE: none; BORDER-LEFT: #DDDDDD 1px solid; COLOR: #337AB7; BORDER-BOTTOM: #DDDDDD 1px solid; BACKGROUND-COLOR: #F5F5F5
+        }
+        DIV.meneame SPAN.current {
+          BORDER-RIGHT: #DDDDDD 1px solid; PADDING-RIGHT: 12px; BORDER-TOP: #DDDDDD 1px solid; PADDING-LEFT: 12px; FONT-WEIGHT: bold; PADDING-BOTTOM: 7px; BORDER-LEFT: #DDDDDD 1px solid; COLOR: #ffffff; MARGIN-RIGHT: 3px; PADDING-TOP: 7px; BORDER-BOTTOM: #DDDDDD 1px solid; BACKGROUND-COLOR: #337AB7
+        }
+        DIV.meneame SPAN.disabled {
+          BORDER-RIGHT: #ffe3c6 1px solid; PADDING-RIGHT: 7px; BORDER-TOP: #ffe3c6 1px solid; PADDING-LEFT: 7px; PADDING-BOTTOM: 5px; BORDER-LEFT: #ffe3c6 1px solid; COLOR: #ffe3c6; MARGIN-RIGHT: 3px; PADDING-TOP: 5px; BORDER-BOTTOM: #ffe3c6 1px solid
+        }
+      </style>
+    </block>
+    <!-- 导航开始 -->
+    <block name="nav"><include file="Common/header"/></block>
+    <!-- 导航结束 -->
+    <!-- 页面主体  --> 
+      <!-- 搜索框 -->
+      <block name="top">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <div class="row" style="margin-top:10px;">
+              <div class="col-lg-10">
+                <form method="get" action="{:U('Resume/index')}">
+                  <div class="input-group">
+                      <input type="text" name="kw" class="form-control" placeholder="请输入姓名进行搜索：如小明等" style="border:2px solid #286090;" value="{$_GET['kw']}">
+                      <span class="input-group-btn">
+                        <button class="btn btn-primary" type="submit">
+                          <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                          搜索</button>
+                      </span>
+                  </div>
+                </form>
+                <!-- /input-group -->
+              </div><!-- /.col-lg-6 -->
+            </div>
+            <!-- 热门关键字 -->
+            <div class="row hidden-xs">
+              <p class="text-muted" style="margin:10px 0 0px 20px;">热门搜索:
+                <volist name="hotRe" id="hotRe">
+                  <a href="{:U('Resume/index',array('kw'=>$hotRe['hot_name']))}" style="margin-right:10px">{$hotRe.hot_name}</a>
+                </volist>
+              </p>
+            </div>
+          </div>
+        </div>
+      </block>
+      <!-- 搜索框结束 -->
+      <block name="main">
+        <div class="col-md-9">
+          <!-- 标题导航筛选栏 -->
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <span>为您找到 <b>{$count}</b> 份简历</span>
+              <div class="btn-group pull-right hidden-xs" style="margin-top:-6px;">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{$_GET['education']?$_GET['education']:请选择学历}
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu ">
+                  <li><a href="{:U('Home/Resume/index',array('education'=>'博士'))}">博士</a></li>
+                  <li><a href="{:U('Home/Resume/index',array('education'=>'研究生'))}">研究生</a></li>
+                  <li><a href="{:U('Home/Resume/index',array('education'=>'本科'))}">本科</a></li>
+                  <li><a href="{:U('Home/Resume/index',array('education'=>'专科'))}">专科</a></li>
+                  <li><a href="{:U('Home/Resume/index',array('education'=>'高中'))}">高中</a></li>
+                  <li><a href="{:U('Home/Resume/index',array('education'=>'高中以下'))}">高中以下</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <!-- 职位列表 -->
+          <div class="table-responsive">
+            <table class="table  table-hover table-responsive" style="border-bottom:1px solid #ddd;">
+              <thead>
+                <tr class="success">
+                  <th>简历照片</th>
+                  <th>姓名</th>
+                  <th>年龄</th>
+                  <th>性别</th>
+                  <th>学历</th>
+                  <th>期望职位</th>
+                  <th>工作状态</th>
+                </tr>
+              </thead>
+              <tbody>
+                <volist name="list" id="vo">
+                  <tr>
+                    <td style="height:50px;line-height:50px;"><a href="{:U('Resume/details',array('id'=>$vo['id']))}"><img class="media-object" src="{$path}/uploads/jobhunter/photo/{$vo.photo}" alt="简历头像" width="50" /></a></td>
+                    <td style="height:50px;line-height:50px;">{$vo.name}</td>
+                    <td style="height:50px;line-height:50px;">{$vo.age}</td>
+                    <td style="height:50px;line-height:50px;"><if condition="$vo.sex eq 0">女<else/>男</if></td>
+                    <td style="height:50px;line-height:50px;">{$vo.education}</td>
+                    <td style="height:50px;line-height:50px;">{$vo.love_job}</td>
+                    <td style="height:50px;line-height:50px;">
+                      <switch name="vo.work_status">
+                        <case value="0">在职，看看新机会</case>
+                        <case value="1">在职，急寻新工作</case>
+                        <case value="2">在职，暂无跳槽打算</case>
+                        <case value="3">离职，正在找工作</case>
+                      </switch>
+                    </td>
+                  </tr>
+                </volist>
+              </tbody>
+            </table>
+          </div>
+          <!-- 职位列表结束 -->
+          <!-- 分页  -->
+           <div class="meneame">
+              {$page}
+          </div> 
+          <!-- 分页结束 -->
+        </div>
+      </block>
+        <!-- 左边结束 -->
+        <!-- 右边优秀企业展示 -->
+      <block name="right">
+        <div class="col-md-3">
+          <div class="panel panel-default">
+            <div class="panel-heading"><strong>本网站推荐简历</strong></div>
+            <div class="panel-body">
+              <volist name="ll" id="vo">
+                <div class="media">
+                  <div class="media-left">
+                    <a href="{:U('Resume/details',array('id'=>$vo['id']))}">
+                      <img class="media-object" src="{$path}/uploads/jobhunter/photo/{$vo.photo}" alt="..." width="90">
+                    </a>
+                  </div>
+                  <div class="media-body">
+                    <h4 class="media-heading">姓名：{$vo.name}</h4>
+                    <div>性别：<if condition="$vo.sex eq 0">女<else/>男</if></div>
+                    <div>年龄：{$vo.age}</div>
+                    <div>学历：{$vo.education}</div>
+                  </div>
+                </div>
+                <hr />
+              </volist>
+            </div>
+          </div>
+        </div>
+      </block>
+        <!-- 企业模板结束 --> 
+      <!-- 底部版权等信息 -->
+      <block name="footer">
+        <include file="Common/footer"/>
+      </block>

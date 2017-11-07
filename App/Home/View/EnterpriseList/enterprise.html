@@ -1,0 +1,130 @@
+<extend name="Common:list" />
+  <!-- 标题 -->
+  <block name="title">
+    <title>招聘信息详情-{$sysInfo.title}</title>
+  </block>
+  <!-- 标题结束 -->
+  <block name="body">
+    <body style="background-color:#f6f6f6;">
+  </block>
+  <!-- 导航开始 -->
+  <block name="nav">
+    <include file="Common:header" />
+  </block>
+  <!-- 导航结束 -->
+  <!-- 页面主体  -->
+  <!-- 企业信息 -->
+  <!-- 公司基本信息开始 -->
+  <block name="top">
+    <div class="media" style="margin-top:20px;">
+      <div class="media-left">
+        <img class="media-object img-thumbnail" src="{$path}/uploads/enterprise/photo/{$vo.en_photo}" alt="企业图标">
+      </div>
+      <div class="media-body">
+        <h2 class="media-heading">{$vo.en_name}</h2>
+        <ul class="list-inline" style="margin-top:20px;">
+          <li>规模：{$vo.en_scale}&nbsp;&nbsp;&nbsp;|</li>
+          <li>性质：{$vo.en_nature}&nbsp;&nbsp;&nbsp;|</li>
+          <li>所在地：{$vo.en_province}{$vo.en_city}{$vo.en_county}</li>
+        </ul>
+        <ul class="list-inline">
+          <volist name="advantages" id="vv">
+          <li style="margin-bottom:10px;"><button type="button" class="btn btn-info">{$vv.name}</button></li>
+          </volist>
+        </ul>
+      </div>
+    </div>
+    <!-- 公司基本信息结束 -->
+    <!-- 公司简介 -->
+    <div class="panel panel-default">
+      <div class="panel-body">
+        {$vo.en_introduction}
+      </div>
+    </div>
+  </block>
+  <!-- 公司简介结束 -->
+  <!-- 公司正在招聘信息 -->
+  <block name="main">
+    <div class="col-md-9">
+      <div class="panel panel-default">
+        <!-- Default panel contents -->
+        <div class="panel-heading"><strong>我公司正在招聘的职位（{$applyCount}个）</strong></div>
+        <!-- Table -->
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>职位名称</th>
+              <th>公司名称</th>
+              <th>工作地点</th>
+              <th>月薪</th>
+              <th>发布时间</th>
+            </tr>
+          </thead>
+          <tbody>
+            <volist name="litt" id="vv">
+              <tr>
+                <td><a href="{:U('Home/Apply/applyDetails','id='.$vv['id'])}" target="_black">{$vv.job_name}</a></td>
+                <td>{$vv.en_name}</td>
+                <td>{$vv.work_province}-{$vv.work_city}</td>
+                <td>{$vv.salary}</td>
+                <td>{$vv.publish_time|date="Y-m-d H:i:s",###}</td>
+              </tr>
+            </volist>
+            <tr style="height:30px;">
+              <td colspan="5">
+                <!-- 分页 -->
+                <div class="row">
+                  <div class="col-md-1">
+                  </div>
+                  <div class="col-md-10">
+                    <nav>
+                      <ul class="pager">
+                        <li class="previous <if condition='$page eq 1'>disabled</if>"><a href="{:U('EnterpriseList/enterprise',array('id'=>($vo['id']),'page'=>($page-1)))}">上一页</a></li>
+                        <li class="next <if condition='$page eq $total'>disabled</if>"><a href="{:U('EnterpriseList/enterprise',array('id'=>($vo['id']),'page'=>($page+1)))}">下一页</a></li>
+                      </ul>
+                    </nav>
+                  </div>
+                </div>
+                <!-- 分页结束 -->
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </block>
+  <!-- 公司正在招聘信息结束 -->
+  <!-- 公司地址 -->
+  <block name="right">
+    <div class="col-md-3">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">公司地址</h3>
+        </div>
+        <div class="panel-body">
+          <span class="glyphicon glyphicon-map-marker">{$vo.en_province}{$vo.en_city}{$vo.en_county}{$vo.en_address_details}</span>
+        </div>
+      </div>
+    </div>
+    <!-- 公司地址结束 -->
+    <!-- 公司地址 -->
+    <div class="col-md-3">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">公司联系方式</h3>
+        </div>
+        <div class="panel-body">
+          <span class="glyphicon glyphicon-phone-alt"> {$vo.phone}</span><br /><br />
+          <span class="glyphicon glyphicon-envelope"> {$vo.email}</span>
+        </div>
+      </div>
+    </div>
+  </block>
+  <!-- 公司地址结束 -->
+  <!-- 企业信息结束 -->
+  <!-- 底部版权信息 -->
+  <block name="footer">
+    <include file="Common/footer" />
+  </block>
+  <!-- 底部版权信息结束 -->
+   

@@ -1,0 +1,30 @@
+<div class="pageContent">
+	<form method="post" action="__URL__/insert/navTabId/listSlides/callbackType/closeCurrent"  class="pageForm required-validate" enctype="multipart/form-data" onsubmit="return iframeCallback(this,dialogAjaxDone);"
+		onsubmit="return validateCallback(this,dialogAjaxDone);">
+		<div class="pageFormContent" layoutH="58">
+			<dl>
+				<dt>标题名称：</dt>
+				<dd><input type="text" class="required" name="img_title" /></dd>
+			</dl>
+			<dl>
+				<dt>内容：</dt>
+				<dd><input type="text" class="required" name="img_content" size="40" /></dd>
+			</dl>
+			<dl>
+				<dt>图片位置：</dt>
+				<dd><input type="text" min="0" max="2" name="img_position" size="5" /></dd>
+			</dl>
+			<dl>
+				<dt>上传图片：</dt>
+				<dd><input type="file" name="uploadpic"/></dd>
+			</dl>
+		</div>
+		<div class="formBar">
+			<ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">添加</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+</div>
+

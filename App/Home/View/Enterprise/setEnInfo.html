@@ -1,0 +1,236 @@
+<extend name="Common:core" />
+  <block name="title">
+    <title>企业信息设置-{$sysInfo.title}</title>
+  </block>
+  <block name="js">
+    <script type="text/javascript">
+      //获取select下拉框并添加选中事件
+        // 省变化的时候自动加载市级城市
+      $(function(){
+        $("select[name='en_province']").change(function(){
+          var ob = this;
+          var pid=$("#province option:selected").attr('cid');
+          // alert(pid);
+          // die();
+          var opt = "<option>请选择</option>";
+          $("#city").empty();
+          $("#city").append(opt);
+          var opt = "<option>请选择</option>";
+          $("#county").empty();
+          $("#county").append(opt);
+          $.ajax({
+            type:"POST",             //发送方式
+            url :"__URL__/doload",  //请求地址
+            data:"pid="+pid,      //请求数据
+            async:true,             //是否异步
+            dataType:"json",        //响应数据类型
+            success:function(data){ //成功回调函数
+              if(data==null){
+                  return;
+              }
+              //遍历结果，拼装下拉项
+              var str = "";
+              for(var i=0;i<data.length;i++){
+                str +="<option cid='"+data[i].id+"' value='"+data[i].name+"'>";
+                str +=data[i].name;
+                str +="</option>";
+              }
+              //添加下拉项中
+              $("select[name='en_city']").append(str);
+            },
+          });
+        });
+        // 市变化的时候自动加载县级城市
+        $("select[name='en_city']").change(function(){
+          var ob = this;
+          var cid=$("#city option:selected").attr('cid');
+          // alert(cid);
+          // die();
+          $("#county").empty();
+          var op = "<option>请选择</option>";
+          $("#county").append(op);
+          $.ajax({
+            type:"POST",             //发送方式
+            url :"__URL__/doload",  //请求地址
+            data:"pid="+cid,   //请求数据
+            async:true,             //是否异步
+            dataType:"json",        //响应数据类型
+            success:function(data){ //成功回调函数
+              if(data==null){
+                  return;
+              }
+              //遍历结果，拼装下拉项
+              var str = "";
+              for(var i=0;i<data.length;i++){
+                str +="<option cid='"+data[i].id+"' value='"+data[i].name+"'>";
+                str +=data[i].name;
+                str +="</option>";
+              }
+              //添加下拉项中
+              $("select[name='en_county']").append(str);
+            },
+          });
+        });
+      });
+    </script>
+  </block>
+  <!-- 导入导航 -->
+  <block name="nav">
+    <include file="./Common/header" />
+  </block>
+  <!-- 导航结束 -->
+  <!-- 左边导航开始 -->
+  <block name="left">
+    <div class="col-md-3" style="border-top:1px solid #ddd;">
+      <div style="margin-top:10px;">
+        <img src="{$path}/uploads/enterprise/photo/{$_SESSION['ITUser']['en_photo']}" alt="头像" class="img-circle center-block" width="160" height="160" style="margin-bottom:10px;">
+        <p class="text-muted text-center"><strong>{$_SESSION['ITUser']['en_name']}</strong></p>
+      </div>
+      <ul class="nav nav-pills nav-stacked">
+        <li role="presentation"><a href="{:U('Home/Enterprise/index')}">个人中心</a></li>
+        <li role="presentation"><a href="{:U('Home/EnApply/listApply')}">招聘管理</a></li>
+        <li role="presentation"><a href="{:U('Home/DealResume/index')}">简历管理</a></li>
+        <li role="presentation" class="active"><a href="{:U('Home/Enterprise/setEnInfo')}">企业管理</a></li>
+        <li role="presentation"><a href="{:U('Home/Enterprise/updatePw')}">修改密码</a></li>
+      </ul>
+    </div>
+  </block>
+  <!-- 左边导航结束 -->
+  <!-- 右边主体 -->
+  <block name="main">
+    <div class="col-md-9 resume-border" >
+    <div class="online-resume">
+      <h3>管理企业基本信息</h3>
+    </div>
+     <ul class="nav nav-tabs">
+      <li role="presentation" class="active"><a href="{:U('Home/Enterprise/setEnInfo')}">修改企业信息</a></li>
+    </ul>
+    <!-- 招聘职位基本信息 -->
+    <form class="form-horizontal" action="{:U('Home/Enterprise/saveEnInfo')}" method="post" enctype="multipart/form-data">
+      <div class="alert alert-info col-md-12" role="alert" id="umessage">基本信息</div>
+      <div class="col-md-12">
+        <div class=" col-md-offset-1 col-md-10">
+          <div class="form-group">
+            <label for="enNa" class="col-sm-2 control-label">*企业名称</label>
+            <div class="col-sm-10">
+              <input type="text" name="en_name" value="{$enterprise.en_name}" class="form-control" id="enNa" placeholder="请输入您的企业名称">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="enAd" class="col-sm-2 control-label">*企业地址</label>
+            <div class="col-sm-10">
+              <div class="col-md-4">
+                <select class="form-control" name="en_province" id="province">
+                  <option value="">请选择省份</option>
+                  <volist name="provinceList" id="vo">
+                    <option value="{$vo.name}" cid="{$vo.id}" <if condition="$vo.name eq $enterprise['en_province']">selected</if>>{$vo.name}</option>
+                  </volist>
+                </select>
+              </div>
+              <div class="col-md-4">
+                <select class="form-control" name="en_city" id="city">
+                  <option value="">请选择</option>
+                  <volist name="cityList" id="vo">
+                    <option value="{$vo.name}" cid="{$vo.id}" <if condition="$vo.name eq $enterprise['en_city']">selected</if>>{$vo.name}</option>
+                  </volist>
+                </select>
+              </div>
+              <div class="col-md-4">
+                <select class="form-control" name="en_county" id="county">
+                  <option value="">请选择</option>
+                  <volist name="countyList" id="vo">
+                    <option value="{$vo.name}" cid="{$vo.id}" <if condition="$vo.name eq $enterprise['en_county']">selected</if>>{$vo.name}</option>
+                  </volist>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="enDet" class="col-sm-2 control-label">*详细地址</label>
+            <div class="col-sm-10">
+              <input type="text" name="en_address_details" value="{$enterprise.en_address_details}" class="form-control" id="enDet" placeholder="请输入企业详细地址">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="enNat" class="col-sm-2 control-label">*企业性质</label>
+            <div class="col-sm-4">
+              <select class="form-control" name="en_nature" id="enNat">
+                <!-- <option value="{$enterprise.en_nature}">{$enterprise.en_nature}</option> -->
+                <option value="">请选择企业规模</option>
+                <option value="外商独资" <if condition="$enterprise.en_nature eq '外商独资'">selected</if>>外商独资</option>
+                <option value="中外合营" <if condition="$enterprise.en_nature eq '中外合营'">selected</if>>中外合营</option>
+                <option value="民营企业" <if condition="$enterprise.en_nature eq '民营企业'">selected</if>>民营企业</option>
+                <option value="国有企业" <if condition="$enterprise.en_nature eq '国有企业'">selected</if>>国有企业</option>
+                <option value="国内上市公司" <if condition="$enterprise.en_nature eq '国内上市公司'">selected</if>>国内上市公司</option>
+                <option value="政府机关" <if condition="$enterprise.en_nature eq '政府机关'">selected</if>>政府机关</option>
+                <option value="事业单位" <if condition="$enterprise.en_nature eq '事业单位'">selected</if>>事业单位</option>
+                <option value="公益组织" <if condition="$enterprise.en_nature eq '事业单位'">selected</if>>公益组织</option>
+                <option value="其他" <if condition="$enterprise.en_nature eq '其他'">selected</if>>其他</option>
+              </select>
+            </div>
+            <label for="enSc" class="col-sm-2 control-label">*企业规模</label>
+            <div class="col-sm-4">
+              <select class="form-control" name="en_scale" id="enSc">
+                <!-- <option value="{$enterprise.en_scale}">{$enterprise.en_scale}</option> -->
+                <option value="">请选择企业规模</option>
+                <option value="10人以下" <if condition="$enterprise.en_scale eq '10人以下'">selected</if>>10人以下</option>
+                <option value="10-50人" <if condition="$enterprise.en_scale eq '10-50人'">selected</if>>10-50人</option>
+                <option value="50-100人" <if condition="$enterprise.en_scale eq '50-100人'">selected</if>>50-100人</option>
+                <option value="100-300人" <if condition="$enterprise.en_scale eq '100-300人'">selected</if>>100-300人</option>
+                <option value="300人以上" <if condition="$enterprise.en_scale eq '300人以上'">selected</if>>300人以上</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label  class="col-sm-2 control-label">*企业图标</label>
+            <div class="col-sm-10 form-group">
+              <label for="enphoto">
+                <img src="{$path}/uploads/enterprise/photo/{$enterprise.en_photo}" title="请点击上传企业图标" alt="企业图标" class="img-thumbnail center-block" style="margin-bottom:-25px;margin-left:15px;">
+                <input type="file" name="en_photo" id="enphoto" style="margin-top:5px;display:none;" class="col-md-7">
+              </label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">*企业亮点</label>
+            <div class="col-sm-10">
+              <button class="btn btn-warning" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                请选择企业亮点标签
+              </button>
+              <div class="collapse" id="collapseExample">
+                <div class="well">
+                  <volist name="enAdvantage" id="vo">
+                    <label class="checkbox-inline" for="{$vo.id}" style="margin-left:10px;">
+                      <input type="checkbox" name="en_advantages[]" id="{$vo.id}" value="{$vo.id}" <if condition="in_array($vo['id'],$enAdvantageArray)">checked</if> >{$vo.name}
+                    </label>
+                  </volist>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 基本信息结束 -->
+      <!-- 企业介绍 -->
+      <div class="alert alert-info col-md-12" role="alert" id="umessage">企业介绍</div>
+      <div class="col-md-12">
+        <div class="col-md-offset-1 col-md-10">
+          <div class="form-group">
+            <textarea class="form-control" rows="10" style="resize:none;" name="en_introduction" id="enIntroduction" placeholder="请用300字以上简单的介绍您的企业信息">{$enterprise.en_introduction}</textarea>
+          </div>
+        </div>
+      </div>
+      <!-- 企业介绍结束 -->
+      <div class="col-md-12">
+        <button type="submit" class="btn btn-primary btn-block" style="margin-bottom:10px;">保存</button>
+      </div>
+    </form>
+    </div>
+  </block>
+  <!-- 底部版权 -->
+  <block name="footer">
+    <include file="Common:footer" />
+  </block>
+  <!-- 底部版权结束 -->
+  <script>
+    alert('ok');
+  </script>

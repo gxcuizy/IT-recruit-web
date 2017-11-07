@@ -1,0 +1,404 @@
+<extend name="Common:login" />
+  <block name="title">
+    <title>完善简历-{$sysInfo.title}</title>
+  </block>
+  <block name="js">
+    <script type="text/javascript">
+      //获取select下拉框并添加选中事件
+      $(function(){
+        //加载一级城市信息
+        $.ajax({
+          type:"POST",             //发送方式
+          url :"__URL__/doload",   //请求地址
+          data:"pid=0",            //请求数据
+          async:true,              //是否异步
+          dataType:"json",         //响应数据类型
+          success:function(data){  //成功回调函数
+            //遍历结果，拼装下拉项
+            var str = "";
+            for(var i=0;i<data.length;i++){
+                str +="<option cid='"+data[i].id+"' value='"+data[i].name+"'>";
+                str +=data[i].name;
+                str +="</option>";
+            }
+            //添加下拉项中
+            $("select[name='province']").append(str);
+          },
+        });
+        // 省变化的时候自动加载市级城市
+        $("select[name='province']").change(function(){
+          var ob = this;
+          var pid=$("#province option:selected").attr('cid');
+          var opt = "<option>请选择</option>";
+          $("#city").empty();
+          $("#city").append(opt);
+          var opt = "<option>请选择</option>";
+          $("#county").empty();
+          $("#county").append(opt);
+          $.ajax({
+            type:"POST",             //发送方式
+            url :"__URL__/doload",   //请求地址
+            data:"pid="+pid,         //请求数据
+            async:true,              //是否异步
+            dataType:"json",         //响应数据类型
+            success:function(data){  //成功回调函数
+              if(data==null){
+                  return;
+              }
+              //遍历结果，拼装下拉项
+              var str = "";
+              for(var i=0;i<data.length;i++){
+                str +="<option cid='"+data[i].id+"' value='"+data[i].name+"'>";
+                str +=data[i].name;
+                str +="</option>";
+              }
+              //添加下拉项中
+              $("select[name='city']").append(str);
+            },
+          });
+        });
+        // 市变化的时候自动加载县级城市
+        $("select[name='city']").change(function(){
+          var ob = this;
+          var cid=$("#city option:selected").attr('cid');
+          // alert(cid);
+          // die();
+          $("#county").empty();
+          var op = "<option>请选择</option>";
+          $("#county").append(op);
+          $.ajax({
+            type:"POST",             //发送方式
+            url :"__URL__/doload",   //请求地址
+            data:"pid="+cid,         //请求数据
+            async:true,              //是否异步
+            dataType:"json",         //响应数据类型
+            success:function(data){  //成功回调函数
+              if(data==null){
+                  return;
+              }
+              //遍历结果，拼装下拉项
+              var str = "";
+              for(var i=0;i<data.length;i++){
+                str +="<option cid='"+data[i].id+"' value='"+data[i].name+"'>";
+                str +=data[i].name;
+                str +="</option>";
+              }
+              //添加下拉项中
+              $("select[name='county']").append(str);
+            },
+          });
+        });
+         //验证姓名
+          $("input[name='name']").blur(function(){
+              var name = $("input[name='name']").val();
+              if(name.length<1){
+                  $("input[name='name']").parent().parent().attr("class","form-group has-error");
+                  }else{
+                  $("input[name='name']").parent().parent().attr("class","form-group");
+                  }
+          });
+          //验证年龄
+          $("input[name='age']").blur(function(){
+              var age = $("input[name='age']").val();
+              var sex = $("select[name='sex']").val();
+              if(age.match(/^\d{1,3}$/)==null || sex<0){
+                  $("input[name='age']").parent().parent().attr("class","form-group has-error");
+              }else{
+                  $("input[name='age']").parent().parent().attr("class","form-group");
+              }
+          });
+
+          //验证邮箱
+          $("input[name='email']").blur(function(){
+              var email = $("input[name='email']").val();
+              if(email.match(/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/)==null){
+                  $("input[name='email']").parent().parent().attr("class","form-group has-error");
+                  }else{
+                  $("input[name='email']").parent().parent().attr("class","form-group");
+                  }
+          });
+
+         
+
+          //验证手机号
+           $("input[name='phone']").blur(function(){
+              var phone = $("input[name='phone']").val();
+              if(phone.match(/^1\d{10}$/)==null){
+                  $("input[name='phone']").parent().parent().attr("class","form-group has-error");
+                  }else{
+                  $("input[name='phone']").parent().parent().attr("class","form-group");
+                  }
+          });
+
+          //验证毕业学校
+          $("input[name='school']").blur(function(){
+              var school = $("input[name='school']").val();
+              if(school.length<1){
+                  $("input[name='school']").parent().parent().attr("class","form-group has-error");
+                  }else{
+                  $("input[name='school']").parent().parent().attr("class","form-group");
+                  }
+          });
+
+          //验证工作经历
+          $("textarea[name='work_experience']").blur(function(){
+              var work_experience = $("textarea[name='work_experience']").val();
+              if(work_experience.length<1){
+                  $("textarea[name='work_experience']").parent().attr("class","form-group has-error");
+                  }else{
+                  $("textarea[name='work_experience']").parent().attr("class","form-group");
+                  }
+          });
+
+          //验证项目开发经验
+           $("textarea[name='dev_experience']").blur(function(){
+              var dev_experience = $("textarea[name='dev_experience']").val();
+              if(dev_experience.length<1){
+                  $("textarea[name='dev_experience']").parent().attr("class","form-group has-error");
+                  }else{
+                  $("textarea[name='dev_experience']").parent().attr("class","form-group");
+                  }
+          });
+
+            //验证自我评价
+           $("textarea[name='self_evaluation']").blur(function(){
+              var self_evaluation = $("textarea[name='self_evaluation']").val();
+              if(self_evaluation.length<1){
+                  $("textarea[name='self_evaluation']").parent().attr("class","form-group has-error");
+                  }else{
+                    $("textarea[name='self_evaluation']").parent().attr("class","form-group");
+                    $("#form").attr("onsubmit","");
+                  }
+          });
+
+           //验证提交
+           $("#button").click(function(){
+              var name = $("input[name='name']").val();
+              if(name.length<1){
+                  $("input[name='name']").parent().parent().attr("class","form-group has-error");
+                  }
+              var age = $("input[name='age']").val();
+              var sex = $("select[name='sex']").val();
+              if(age.match(/^\d{1,3}$/)==null || sex<0){
+                  $("input[name='age']").parent().parent().attr("class","form-group has-error");
+              }
+              var email = $("input[name='email']").val();
+              if(email.match(/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/)==null){
+                  $("input[name='email']").parent().parent().attr("class","form-group has-error");
+                  }
+              var phone = $("input[name='phone']").val();
+              if(phone.match(/^1\d{10}$/)==null){
+                  $("input[name='phone']").parent().parent().attr("class","form-group has-error");
+                  }
+              var school = $("input[name='school']").val();
+              if(school.length<1){
+                  $("input[name='school']").parent().parent().attr("class","form-group has-error");
+                  }
+              var work_experience = $("textarea[name='work_experience']").val();
+              if(work_experience.length<1){
+                  $("textarea[name='work_experience']").parent().attr("class","form-group has-error");
+                  }
+              var dev_experience = $("textarea[name='dev_experience']").val();
+              if(dev_experience.length<1){
+                  $("textarea[name='dev_experience']").parent().attr("class","form-group has-error");
+                  }
+              var self_evaluation = $("textarea[name='self_evaluation']").val();
+              if(self_evaluation.length<1){
+                  $("textarea[name='self_evaluation']").parent().attr("class","form-group has-error");
+                  }
+          });
+      });
+    </script>
+  </block>
+  <!-- 导入导航 -->
+  <block name="nav">
+    <include file="Common:header" />
+  </block>
+  <!-- 导航结束 -->
+  <!-- 右边主体 -->
+  <block name="main">
+    <div class="container panel panel-default">
+      <!-- 右边主体 -->
+      <div class="col-md-offset-1 col-md-10" >
+        <div class="online-resume">
+          <h3>最后一步：为了帮助您更好、更快地找到满意的工作，请完善个人简历</h3>
+        </div>
+        <form class="form-horizontal" id="form" action="{:U('Home/Register/setResume')}" onsubmit="return false" method="post"  enctype="multipart/form-data">
+          <div class="alert alert-info col-md-12" role="alert" id="umessage">基本信息</div>
+          <div class="col-md-12">
+            <div class="col-md-9">
+              <div class="form-group">
+                <label for="name" class="col-sm-2 control-label">*姓&nbsp;&nbsp;&nbsp;&nbsp;名</label>
+                <div class="col-sm-10">
+                  <input type="text" name="name" class="form-control" id="name" placeholder="请输入您的姓名">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="age" class="col-sm-2 control-label">*年&nbsp;&nbsp;&nbsp;&nbsp;龄</label>
+                <div class="col-sm-4">
+                  <input type="text" name="age" class="form-control" id="age" placeholder="请输入您的年龄">
+                </div>
+                <label for="sex" class="col-sm-2 control-label">*性&nbsp;&nbsp;&nbsp;&nbsp;别</label>
+                <div class="col-sm-4">
+                  <select class="form-control" name="sex" id="sex">
+                    <option value="-1">请选择性别</option>
+                    <option value="1">男</option>
+                    <option value="0">女</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="phone" class="col-sm-2 control-label">*手&nbsp;&nbsp;&nbsp;&nbsp;机</label>
+                <div class="col-sm-10">
+                  <input type="text" name="phone" value="{$_SESSION['ITUser']['contact']}" class="form-control" id="phone" placeholder="请输入您的手机号码">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="email" class="col-sm-2 control-label">*邮&nbsp;&nbsp;&nbsp;&nbsp;箱</label>
+                <div class="col-sm-10">
+                  <input type="text" name="email" class="form-control" id="email" placeholder="请输入您的邮箱地址">
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <label for="uploadPhoto">
+                <img src="{$path}/uploads/jobhunter/photo/default.jpg" alt="个人照片" title="个人头像" class="img-thumbnail center-block">
+                <input type="file" id="uploadPhoto" name="photo" style="margin-top:5px;width:100%;">
+              </label>
+            </div>
+          </div>
+          <!-- 基本信息结束 -->
+          <div class="alert alert-info col-md-12" role="alert" id="umessage">个人信息</div>
+          <div class="col-md-12">
+            <div class="col-md-9">
+              <div class="form-group">
+                <label for="school" class="col-sm-2 control-label">*毕业院校</label>
+                <div class="col-sm-10">
+                  <input type="text" name="school" class="form-control" id="school" placeholder="请输入您毕业学校名">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="marry" class="col-sm-2 control-label">*婚姻状况</label>
+                <div class="col-sm-4">
+                  <select class="form-control" name="is_marry" id="marry">
+                    <option value="">请选择婚姻状态</option>
+                    <option value="0">保密</option>
+                    <option value="1">未婚</option>
+                    <option value="2">已婚</option>
+                  </select>
+                </div>
+                <label for="education" class="col-sm-2 control-label">*最高学历</label>
+                <div class="col-sm-4">
+                  <select class="form-control" name="education" id="education">
+                    <option value="">请选择学历</option>
+                    <option value="博士">博士</option>
+                    <option value="研究生">研究生</option>
+                    <option value="本科">本科</option>
+                    <option value="专科">专科</option>
+                    <option value="高中">高中</option>
+                    <option value="高中以下">高中以下</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="school" class="col-sm-2 control-label">*籍&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;贯</label>
+                <div class="col-sm-10">
+                  <div class="col-md-4">
+                    <select class="form-control" name="province" id="province">
+                      <option value="">请选择省份</option>
+                    </select>
+                  </div>
+                  <div class="col-md-4">
+                    <select class="form-control" name="city" id="city">
+                      <option value="">请选择</option>
+                    </select>
+                  </div>
+                  <div class="col-md-4">
+                    <select class="form-control" name="county" id="county">
+                      <option value="">请选择</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+            </div>
+          </div>
+          <!-- 个人信息结束 -->
+          <!-- 工作经验 -->
+          <div class="alert alert-info col-md-12" role="alert" id="umessage">工作经验</div>
+          <div class="col-md-12">
+            <div class="col-md-9">
+              <div class="form-group">
+                <label for="workStatus" class="col-sm-2 control-label">*工作状态</label>
+                <div class="col-sm-4">
+                  <select class="form-control" name="work_status" id="workStatus">
+                    <option value="">请选择工作状态</option>
+                    <option value="0">在职，看看新机会</option>
+                    <option value="1">在职，急寻新工作</option>
+                    <option value="2">在职，暂无跳槽打算</option>
+                    <option value="3">离职，正在找工作</option>
+                  </select>
+                </div>
+                <label for="loveJob" class="col-sm-2 control-label">*期望职位</label>
+                <div class="col-sm-4">
+                  <input type="text" name="love_job" class="form-control" id="loveJob" placeholder="请输入您的期望职位">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="workExperience" class="col-sm-2 control-label"><span>*</span>工作经历</label>
+                <textarea class="form-control" rows="7" style="resize:none;" name="work_experience" id="workExperience" placeholder="请用150字以上简单地描述一下您的工作经历，没有可写无"></textarea>
+              </div>
+            </div>
+            <div class="col-md-3">
+
+            </div>
+          </div>
+          <!-- 工作经验结束 -->
+          <!-- 项目开发经验 -->
+          <div class="alert alert-info col-md-12" role="alert" id="umessage">项目开发经验</div>
+          <div class="col-md-12">
+            <div class="col-md-9">
+              <div class="form-group">
+                <textarea class="form-control" rows="7" style="resize:none;" name="dev_experience" id="devExperience" placeholder="请用150字以上简单地描述一下您有参与或组织的项目开发经历"></textarea>
+              </div>
+            </div>
+            <div class="col-md-3">
+
+            </div>
+          </div>
+          <!-- 项目开发经验结束 -->
+          <!-- 自我评价面板 -->
+          <div class="alert alert-info col-md-12" role="alert" id="umessage">自我评价</div>
+          <div class="col-md-12">
+            <div class="col-md-9">
+              <div class="form-group">
+                <textarea class="form-control" rows="7" style="resize:none;" name="self_evaluation" id="selfEvaluation" placeholder="为了让企业更多的了解您，请用150字以上做一个简单的自我评价和认识"></textarea>
+              </div>
+            </div>
+            <div class="col-md-3">
+
+            </div>
+          </div>
+          <div class="alert alert-info col-md-12" role="alert" id="umessage" style="height:55px;">
+            简历是否公开：
+            <label for="radio0">
+              <input type="radio" id="radio0" name="is_show" value="0" checked>不公开
+            </lable>
+            <label for="radio1">
+              <input type="radio" style="margin-left:10px" id="radio1" name="is_show" value="1">公开
+            </label>
+          </div>
+          <!-- 自我评价结束 -->
+          <div class="col-md-12">
+            <button id="button" type="submit" class="btn btn-primary btn-block" style="margin-bottom:10px;">保存简历</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </block>
+  <!-- 底部版权 -->
+  <block name="footer">
+    <include file="./Common/footer" />
+  </block>
+  <!-- 底部版权结束 -->

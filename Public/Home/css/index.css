@@ -1,0 +1,30 @@
+#did{
+        width:750px;
+        height:110px;
+        background-color:#ffffff;
+        position: absolute;
+        display:none;
+        z-index: 10;
+        top:426px;
+      }
+      #did>div{
+        width:100%;
+        height:25%;
+        border-bottom:1px dashed #DDDDDD;
+      }
+      #did>div>div:first-of-type{
+        font-weight: bold;
+        font-size:14px;
+      }
+      #did>div>div{
+        width:90px;
+        height:27px;
+        text-align:center;
+        line-height: 27px;
+        color: #999999;
+        float:left;
+      }
+      #did a{
+        text-decoration: none;
+        font-size:13px;
+      }

@@ -1,0 +1,35 @@
+<div class="pageContent">
+	<form method="post" action="__URL__/update/navTabId/listLink/callbackType/closeCurrent"  class="pageForm required-validate" 
+		onsubmit="return validateCallback(this,dialogAjaxDone);">
+		<div class="pageFormContent" layoutH="60">
+			<dl>
+				<dt>网站名称：</dt>
+				<dd><input type="text" class="required" value="{$vo.link_title}"  style="width:100%" name="link_title"/></dd>
+			</dl>
+			<dl>
+				<dt>链接地址：</dt>
+				<dd><input type="text" class="url" value="{$vo.link_url}" style="width:100%" name="link_url" alt="请以http://开始"/></dd>
+			</dl>
+			<dl>
+				<dt>立即前台显示：</dt>
+				<dd>
+					<input type="radio" name="is_show" value='1' <if condition="$vo.is_show eq 1">checked</if> />是
+					<input type="radio" name="is_show" value='0' <if condition="$vo.is_show eq 0">checked</if> />否
+				</dd>
+			</dl>
+			<dl>
+				<dd>
+					<input type="hidden" value="<?php echo time();?>" name="update_time" />
+					<input type="hidden" name="id" value="{$vo.id}" />
+				</dd>
+			</dl>
+		</div>
+		<div class="formBar">
+			<ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">修改</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+</div>
+

@@ -1,0 +1,149 @@
+<extend name="Common:core" />
+  <block name="title">
+    <title>招聘管理-{$sysInfo.title}</title>
+  </block>
+  <!-- 导航开始 -->
+  <block name="nav">
+    <include file="./Common/header" />
+  </block>
+  <!-- 导航结束 -->
+  <!-- 左边导航开始 -->
+  <block name="left">
+    <div class="col-md-3" style="border-top:1px solid #ddd;">
+      <div style="margin-top:10px;">
+        <img src="{$path}/uploads/enterprise/photo/{$_SESSION['ITUser']['en_photo']}" alt="头像" class="img-circle center-block" width="160" height="160" style="margin-bottom:10px;">
+        <p class="text-muted text-center"><strong>{$_SESSION['ITUser']['en_name']}</strong></p>
+      </div>
+      <ul class="nav nav-pills nav-stacked">
+        <li role="presentation"><a href="{:U('Home/Enterprise/index')}">个人中心</a></li>
+        <li role="presentation" class="active"><a href="{:U('Home/EnApply/listApply')}">招聘管理</a></li>
+        <li role="presentation"><a href="{:U('Home/DealResume/index')}">简历管理</a></li>
+        <li role="presentation"><a href="{:U('Home/Enterprise/setEnInfo')}">企业管理</a></li>
+        <li role="presentation"><a href="{:U('Home/Enterprise/updatePw')}">修改密码</a></li>
+      </ul>
+    </div>
+  </block>
+  <!-- 左边导航结束 -->
+  <!-- 右边主体 -->
+  <block name="main">
+    <div class="col-md-9 resume-border">
+      <div class="online-resume">
+        <h3>企业招聘信息管理列表</h3>
+      </div>
+      <!-- 简历右边导航选项卡 -->
+      <ul class="nav nav-tabs">
+        <li role="presentation" class="active"><a href="{:U('Home/EnApply/listApply')}">招聘职位列表</a></li>
+        <li role="presentation"><a href="{:U('Home/EnApply/addApply')}">发布招聘信息</a></li>
+      </ul>
+      <!-- 简历右边导航选项卡结束 -->
+      <!-- 我的信息 -->
+      <div class="alert alert-info" role="alert" id="umessage">
+        <span>我发布的招聘职位列表</span>
+      </div>
+      <!-- 基本信息 -->
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <span style="margin-right:20px;"><strong> <a href="{:U('Home/EnApply/listApply')}">全部招聘</a> </strong></span>
+          <span style="margin-right:20px;"><strong> <a href="{:U('Home/EnApply/listApply','status=0')}">正在招聘</a> </strong></span>
+          <span style="margin-right:20px;"><strong> <a href="{:U('Home/EnApply/listApply','status=1')}">暂停招聘</a> </strong></span>
+        </div>
+        <div class="panel-body table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr class="success">
+                <th>职位名称</th>
+                <th>职位状态</th>
+                <th>查看次数</th>
+                <th>应聘人数</th>
+                <th>发布时间</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <volist name="applyList" id="vo">
+                <tr>
+                  <td>
+                    <span><a href="{:U('Home/Apply/applyDetails','id='.$vo['id'])}" target="_blank">{$vo.job_name}</a></span>
+                  </td>
+                  <td>
+                    <span>
+                      <if condition="$vo.apply_status eq '0'">
+                        正在招聘
+                      <else />
+                        招聘结束
+                      </if>
+                    </span>
+                  </td>
+                  <td>
+                    <span>{$vo.browse_times}</span>
+                  </td>
+                  <td>
+                    <span>{$vo.apply_times}</span>
+                  </td>
+                  <td>
+                    <span>{$vo.publish_time|date="Y-m-d H:i:s",###}</span>
+                  </td>
+                  <td>
+                    <if condition="$vo.apply_status eq '0'">
+                      <span><a type="button" class="btn btn-danger btn-xs" href="{:U('Home/EnApply/stopApply','aid='.$vo['id'])}">停止招聘</a></span>
+                      <a href="{:U('Home/EnApply/delApply','aid='.$vo['id'])}" title="删除这条招聘信息" onclick="if (confirm('确定要删除吗？')) return true; else return false;"><span class="glyphicon glyphicon-trash" style="margin-left:10px;"></span></a>
+                    <else />
+                      <span><a type="button" class="btn btn-info btn-xs" href="{:U('Home/EnApply/startApply','aid='.$vo['id'])}">继续招聘</a></span>
+                      <a href="{:U('Home/EnApply/delApply','aid='.$vo['id'])}" title="删除这条招聘信息" onclick="if (confirm('确定要删除吗？')) return true; else return false;"><span class="glyphicon glyphicon-trash" style="margin-left:10px;"></span></a>
+                    </if>
+                  </td>
+                </tr>
+              </volist>
+              <assign name="status" value="$Think.get.status" />
+              <tr>
+                <td colspan="6" align="center">
+                  <ul class="pagination">
+                    <eq name="page" value="1" >
+                      <li class="disabled">
+                      <a href="#">
+                        <span aria-hidden="true">上一页</span>
+                      </a>
+                    </li>
+                    <else />
+                      <li>   
+                        <a href="{:U('Home/EnApply/listApply/',array('page'=>($page-1),'status'=>$status))}">
+                          <span aria-hidden="true">上一页</span>
+                        </a>
+                      </li>
+                    </eq>
+                    <!-- 页码小于8 -->            
+                    <lt name="pageCount" value="8">
+                      <for start="1" end="$pageCount+1">
+                        <li <eq name="i" value="$page" >class="active"</eq>>
+                          <a href="{:U('Home/EnApply/listApply/',array('page'=>$i,'status'=>$status))}">{$i}</a>
+                        </li>
+                      </for>
+                    </lt>
+                    <if condition="($page eq $pageCount) OR ($pageCount eq '0')">
+                      <li class="disabled">
+                      <a href="#">
+                        <span aria-hidden="true">下一页</span>
+                      </a>
+                    </li>
+                    <else />
+                      <li>
+                        <a href="{:U('Home/EnApply/listApply/',array('page'=>($page+1),'status'=>$status))}">
+                          <span aria-hidden="true">下一页</span>
+                        </a>
+                      </li>
+                    </if>
+                  </ul>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- 基本信息面板结束 -->
+    </div>
+  </block>
+  <!-- 底部版权 -->
+  <block name="footer">
+    <include file="Common:footer" />
+  </block>
+  <!-- 底部版权结束 -->

@@ -1,0 +1,80 @@
+<extend name="Common:login" />
+  <block name="title">
+  	<title>企业找回密码-{$sysInfo.title}</title>
+  </block>
+  <block name="js">
+    <script language="JavaScript">
+    <!--
+    function fleshVerify(type){ 
+      //重载验证码
+      var timenow = new Date().getTime()
+      $('#verifyImg').attr("src", '__URL__/verify/'+timenow);
+    }
+    //-->
+
+    //验证邮箱
+    $(function(){
+    	$("#contact").blur(function(){
+    		if($(this).val().match(/^\w+@\w+(\.\w+){1,2}$/)==null){
+    			$("#info").html(' 请输入正确的邮箱格式！').css("display","block");
+    			$("#checkForm").attr("onsubmit","return false;");
+    		}else{
+    			$("#info").css("display","none");
+    			$("#checkForm").attr("onsubmit","return true;");
+    		}
+    	});                                                      
+    });
+    </script>
+  </block>
+  <!-- 导航开始 -->
+  <block name="nav">
+    <include file="Common:header" />
+  </block>
+  <!-- 导航结束 -->
+  <!-- 页面主体  -->
+  <block name="main">
+    <div class="panel panel-default">
+  		<div class="panel-body" style="margin-top:100px;margin-bottom:100px;">
+  			<div class="login-title text-center">
+  				<h3>找回密码~企业账号</h3>
+  			</div>
+  			<form action="{:U('Home/Register/doRetrieveEnPw')}" id="checkForm" method="post" class="col-md-offset-4 col-md-4" onsubmit="">
+  				<div class="form-group">
+  					<div class="input-group">
+  						<span class="input-group-addon"><span class="glyphicon glyphicon-comment"></span></span>
+  						<input type="text" id="contact" name="email" class="form-control" value="" placeholder="请输入您的账号保留邮箱">
+  					</div>
+  				</div>
+  				<div class="form-group">
+  					<div class="input-group">
+  						<span class="input-group-addon"><span class="glyphicon glyphicon-eye-open"></span></span>
+  						<input type="text" id="text" name="code" class="form-control" placeholder="请输入验证码" style="width:65%;margin-right:10px;">
+  						<span><img id="verifyImg" SRC="__URL__/verify/" onClick="fleshVerify()" border="0" alt="点击刷新验证码" style="cursor:pointer;width:30%;height:34px;" align="absmiddle"></span>
+  					</div>
+  					<span align="center" id="info" class="center-block glyphicon glyphicon-warning-sign" style="display:none;"><span>
+  					</div>
+  					<div class="form-group">
+  						<div class="col-md-4 col-md-offset-4 ">
+  							<button type="submit" id="sub" class="btn btn-sm btn-info col-md-12">确定</button>
+  						</div>
+  					</div>
+  					<div class="form-group">
+  						<div class="col-md-6 link">
+  							<p class="text-center remove-margin"><small>已有账号?</small> <a href="{:U('Home/Login/enLogin')}" ><small>马上登陆</small></a>
+  							</p>
+  						</div>
+  						<div class="col-md-6 link">
+  							<p class="text-center remove-margin"><small>没有账号?</small> <a href="{:U('Home/Register/jobRegister')}" ><small>马上注册</small></a>
+  							</p>
+  						</div>
+  					</div>
+  				</form>
+  			</div>
+  		</div>
+    </div>
+	</block>
+	<!-- 底部版权 -->
+	<block name="footer">
+		<include file="Common:footer" />
+	</block>
+  <!-- 底部版权结束 -->

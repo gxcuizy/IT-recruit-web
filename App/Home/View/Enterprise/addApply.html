@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+{/* 公共资源的目录 */}
+<assign name="path" value="__PUBLIC__/Home" />
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="shortcut icon" href="{$path}/images/favicon.ico" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>发布招聘信息-{$sysInfo.title}</title>
+    <style type="text/css">
+    body { padding-top:60px;overflow-y:scroll; }
+    form,div{
+      margin:0;
+      padding:0;
+    }
+      .online-resume{
+        height:50px;
+        margin-top:50px;
+      }
+
+      .resume-border{
+        border:1px solid #dddddd;
+      }
+
+      #umessage{
+        margin-top:10px;
+        background-color:#eee;
+      }
+    </style>
+    <!-- Bootstrap -->
+    <link href="{$path}/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <!-- 导入导航 -->
+    <include file="./Common/header" />
+    <!-- 导航结束 -->
+    <!-- 右边主体 -->
+    <div class="container">
+      <!-- 左边导航开始 -->
+      <div class="col-md-3" style="border-top:1px solid #ddd;">
+        <div style="margin-top:10px;">
+          <img src="{$path}/uploads/enterprise/photo/{$_SESSION['ITUser']['en_photo']}" alt="头像" class="img-circle center-block" width="160" height="160" style="margin-bottom:10px;">
+          <p class="text-muted text-center">{$_SESSION['ITUser']['username']}</p>
+        </div>
+        <ul class="nav nav-pills nav-stacked">
+          <li role="presentation"><a href="__URL__/index">个人中心</a></li>
+          <li role="presentation" class="active"><a href="__URL__/listApply">招聘管理</a></li>
+          <li role="presentation"><a href="__MODULE__/DealResume/index">简历管理</a></li>
+          <li role="presentation"><a href="__URL__/setEnInfo">企业管理</a></li>
+          <li role="presentation"><a href="__URL__/updatePw">修改密码</a></li>
+        </ul>
+      </div>
+      <!-- 左边导航结束 -->
+      <!-- 右边主体 -->
+      <div class="col-md-9 resume-border" >
+        <div class="online-resume">
+          <h3>发布职位招聘信息</h3>
+        </div>
+        <ul class="nav nav-tabs">
+          <li role="presentation"><a href="__URL__/listApply">招聘职位列表</a></li>
+          <li role="presentation" class="active"><a href="__URL__/addApply">发布招聘信息</a></li>
+        </ul>
+        <!-- 招聘职位基本信息 -->
+        <form class="form-horizontal" id="addposition">
+          <div class="alert alert-info col-md-12" role="alert" id="umessage">基本信息</div>
+          <div class="col-md-12">
+            <div class=" col-md-offset-1 col-md-10">
+              <div class="form-group">
+                <label for="enName" class="col-sm-2 control-label">*发布公司</label>
+                <div class="col-sm-10">
+                  <input type="text" name="enName" class="form-control" placeholder="请输入您的公司名字">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="jobName" class="col-sm-2 control-label">*职位名称</label>
+                <div class="col-sm-10">
+                  <input type="email" name="jobName" class="form-control" placeholder="请输入招聘职位名称">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="applyType" class="col-sm-2 control-label">*招聘行业</label>
+                <div class="col-sm-4">
+                  <select class="form-control" name="applyType">
+                    <option value="">请选择行业</option>
+                    <option value="技术类招聘">技术类招聘</option>
+                    <option value="产品类招聘">产品类招聘</option>
+                    <option value="设计类招聘">设计类招聘</option>
+                    <option value="运营类招聘">运营类招聘</option>
+                  </select>
+                </div>
+                <label for="educationClaim" class="col-sm-2 control-label">*学历要求</label>
+                <div class="col-sm-4">
+                  <select class="form-control" name="educationClaim">
+                    <option value="">请选择学历</option>
+                    <option value="博士">博士</option>
+                    <option value="研究生">研究生</option>
+                    <option value="本科">本科</option>
+                    <option value="专科">专科</option>
+                    <option value="高中">高中</option>
+                    <option value="高中以下">高中以下</option>
+                    <option value="学历不限">学历不限</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="jobExperience" name="jobExperience" class="col-sm-2 control-label">*工作经验</label>
+                <div class="col-sm-4">
+                  <select class="form-control" name="resume_sex">
+                    <option value="">请选择工作经验</option>
+                    <option value="5年以上">5年以上</option>
+                    <option value="3-5年">3-5年</option>
+                    <option value="1-3年">1-3年</option>
+                    <option value="无要求">无要求</option>
+                  </select>
+                </div>
+                <label for="salary" class="col-sm-2 control-label">*月薪</label>
+                <div class="col-sm-4">
+                  <select class="form-control" name="salary">
+                    <option value="">请选择月薪</option>
+                    <option value="1000-3000">1000-3000</option>
+                    <option value="3000-5000">3000-5000</option>
+                    <option value="5000-7000">5000-7000</option>
+                    <option value="7000-9000">7000-9000</option>
+                    <option value="10000+">10000+</option>
+                    <option value="面谈">面谈</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="enEmail" class="col-sm-2 control-label">*公司邮箱</label>
+                <div class="col-sm-4">
+                  <input type="text" name="enEmail" class="form-control" placeholder="请输入公司邮箱">
+                </div>
+                <label for="ageClaim" class="col-sm-2 control-label">*年龄要求</label>
+                <div class="col-sm-4">
+                  <select class="form-control" name="ageClaim">
+                    <option value="">请选择年龄</option>
+                    <option value="20岁以下">20岁以下</option>
+                    <option value="20-25岁">20-25岁</option>
+                    <option value="25-30岁">25-30岁</option>
+                    <option value="30-35岁">30-35岁</option>
+                    <option value="年龄不限">年龄不限</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="workAddress" class="col-sm-2 control-label">*工作地点</label>
+                <div class="col-sm-10">
+                  <input type="text" name="workAddress" class="form-control" placeholder="请输入工作招聘信息地点">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="enAdvantages" class="col-sm-2 control-label">*职位亮点</label>
+                <div class="col-sm-10">
+                  <button class="btn btn-warning" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                    请选择职位亮点标签
+                  </button>
+                  <div class="collapse" id="collapseExample">
+                    <div class="well">
+                      <label class="checkbox-inline" for="enAdvantages[]">
+                        <input type="checkbox" name="enAdvantages[]" id="enAdvantages[]" value="1">五险一金
+                      </label>
+                      <label class="checkbox-inline" for="enAdvantages[]">
+                        <input type="checkbox" name="enAdvantages[]" id="enAdvantages[]" value="1">五险一金
+                      </label>
+                      <label class="checkbox-inline" for="enAdvantages[]">
+                        <input type="checkbox" name="enAdvantages[]" id="enAdvantages[]" value="1">五险一金
+                      </label>
+                      <label class="checkbox-inline" for="enAdvantages[]">
+                        <input type="checkbox" name="enAdvantages[]" id="enAdvantages[]" value="1">五险一金
+                      </label>
+                      <label class="checkbox-inline" for="enAdvantages[]">
+                        <input type="checkbox" name="enAdvantages[]" id="enAdvantages[]" value="1">五险一金
+                      </label>
+                      <label class="checkbox-inline" for="enAdvantages[]">
+                        <input type="checkbox" name="enAdvantages[]" id="enAdvantages[]" value="1">五险一金
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- 基本信息结束 -->
+          <!-- 职位职责 -->
+          <div class="alert alert-info col-md-12" role="alert" id="umessage">职位职责</div>
+          <div class="col-md-12">
+            <div class="col-md-offset-1 col-md-10">
+              <div class="form-group">
+                <textarea class="form-control" rows="7" style="resize:none;" name="workDuty"></textarea>
+              </div>
+            </div>
+          </div>
+          <!-- 职位职责结束 -->
+          <!-- 任职要求 -->
+          <div class="alert alert-info col-md-12" role="alert" id="umessage">任职要求</div>
+          <div class="col-md-12">
+            <div class="col-md-offset-1 col-md-10">
+              <div class="form-group">
+                <textarea class="form-control" rows="7" style="resize:none;" name="workClaim"></textarea>
+              </div>
+            </div>
+          </div>
+          <!-- 任职要求结束 -->
+          <!-- 企业介绍职责 -->
+          <div class="alert alert-info col-md-12" role="alert" id="umessage">企业介绍</div>
+          <div class="col-md-12">
+            <div class="col-md-offset-1 col-md-10">
+              <div class="form-group">
+                <textarea class="form-control" rows="7" style="resize:none;" name="enIntroduction"></textarea>
+              </div>
+            </div>
+          </div>
+          <!-- 企业介绍结束 -->
+          <div class="col-md-12">
+            <button type="button" class="btn btn-primary btn-block" style="margin-bottom:10px;">发布职位</button>
+          </div>
+        </form>
+      </div>
+      <!-- 底部版权 -->
+      <include file="./Common/footer" />
+      <!-- 底部版权结束 -->
+    </div>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+     <script src="{$path}/js/jquery.min.js"></script>
+     
+   <!-- <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script> -->
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="{$path}/js/bootstrap.min.js"></script>
+  </body>
+</html>

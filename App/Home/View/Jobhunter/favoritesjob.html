@@ -1,0 +1,92 @@
+<extend name="Common/core"/>
+<block name="title"><title>收藏列表-{$sysInfo.title}</title></block>
+    <!-- 导航开始 -->
+    <block name="nav">
+      <include file="Common/header"/>
+    </block>
+    <!-- 导航结束 -->
+    <!-- 右边主体 -->
+    <!-- 左边导航开始 -->
+    <block name="left">
+      <div class="col-md-3" style="border-top:1px solid #ddd;">
+        <div style="margin-top:10px;">
+          <img src="{$path}/uploads/jobhunter/photo/{$_SESSION['ITUser']['photo']}" alt="头像" class="img-circle center-block" width="150" height="150">
+          <p class="text-muted text-center" style="margin-top:10px;"><strong>{$_SESSION['ITUser']['username']}</strong></p>
+        </div>
+        <ul class="nav nav-pills nav-stacked">
+          <li role="presentation"><a href="{:U('Home/Jobhunter/index')}">个人简历</a></li>
+          <li role="presentation"><a href="{:U('Home/Jobhunter/applyList')}">职位管理</a></li>
+          <li role="presentation" class="active"><a href="{:U('Home/Jobhunter/favoritesJob')}">收藏列表</a></li>
+          <li role="presentation"><a href="{:U('Home/Jobhunter/updatePw')}">修改密码</a></li>
+        </ul>
+      </div>
+    </block>
+    <!-- 左边导航结束 -->
+    <!-- 右边主体 -->
+    <block name="main">
+      <div class="col-md-9 resume-border">
+        <div class="online-resume">
+          <h3>个人收藏职位管理</h3>
+        </div>
+        <!-- 简历右边导航选项卡 -->
+        <ul class="nav nav-tabs">
+          <li role="presentation" class="active"><a href="{:U('Home/Jobhunter/favoritesJob')}">收藏的职位</a></li>
+        </ul>
+        <!-- 简历右边导航选项卡结束 -->
+        <!-- 基本信息 -->
+        <div class="panel panel-default table-responsive" style="border-top:0;padding-bottom:25px;">
+          <div class="panel-heading" style="position:relative;top:20px;left:20px;width:95%;">
+            <span class="glyphicon glyphicon-heart"> <strong>我收藏的职位</strong></span>
+          </div>
+          <table class="table" style="position:relative;top:20px;left:20px;width:95%;">
+            <thead>
+              <tr>
+                <th>职位名称</th>
+                <th>所属企业</th>
+                <th>招聘类型</th>
+                <th>工作地点</th>
+                <th>月薪</th>
+                <th>收藏时间</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <volist name="list" id="vo">
+                  <tr>
+                    <td><a href="{:U('Home/Apply/applyDetails','id='.$vo['aid'])}" target="_blank">{$vo.job_name}</a></td>
+                    <td>{$vo.en_name}</td>
+                    <td>
+                        <switch name="vo.apply_type">
+                          <case value="0">技术类型</case>
+                          <case value="1">产品类型</case>
+                          <case value="2">设计类型</case>
+                          <case value="3">运营类型</case>
+                        </switch>
+                    </td>
+                    <td>{$vo.work_province}{$vo.work_city}</td>
+                    <td>{$vo.salary}</td>
+                    <td>{$vo.collection_time|date="Y-m-d H:i:s",###}</td>
+                    <td><a href="{:U('Home/Jobhunter/delCollection','id='.$vo['id'])}">删除</a></td>
+                  </tr>
+              </volist>
+              <tr>
+                <td>
+                  收藏职位总数：{$count}
+                </td>
+                 <td colspan="6" align="right">
+                  <a href="{:U('Jobhunter/favoritesJob',array('page'=>($page-1)))}">上一页</a>
+                  <a href="{:U('Jobhunter/favoritesJob',array('page'=>($page+1)))}"> 下一页</a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- 基本信息面板结束 -->
+        
+      </div>
+    </block>
+    <!-- 底部版权 -->
+    <block name="footer">
+      <include file="Common/footer"/>
+    </block>
+    <!-- 底部版权结束 -->

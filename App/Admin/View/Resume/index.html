@@ -1,0 +1,90 @@
+<form id="pagerForm" action="__URL__/index" method="post">
+    <input type="hidden" name="pageNum" value="{$currentPage|default='1'}" />
+    <input type="hidden" name="numPerPage" value="{$numPerPage}" /><!--每页显示多少条-->
+    <input type="hidden" name="_order" value="{$Think.request._order}"/>
+    <input type="hidden" name="_sort" value="{$Think.request._sort}"/>
+</form>
+<div class="pageHeader">
+    <form rel="pagerForm" onsubmit="return navTabSearch(this);" method="post">
+        <input type="hidden" name="numPerPage" value="{$numPerPage}" /><!--每页显示多少条-->
+        <div class="searchBar">
+            <table class="searchContent">
+                <tr>
+                    <td>
+                        请输入用户名称进行搜索：<input type="text" name="name" value="{$Think.post.name}" /> 
+                    </td>
+                    <td>
+                        <div class="buttonActive"><div class="buttonContent"><button type="submit">搜索</button></div></div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </form>
+</div>
+<div class="pageContent">
+    <div class="panelBar">
+        <ul class="toolBar">
+            <li><a class="delete" href="__URL__/del/id/{item_id}/navTabId/listResume" target="ajaxTodo" title="确定要删除吗?"><span>删除</span></a></li>
+            <li><a class="edit" href="__URL__/edit/id/{item_id}" target="dialog" title="修改简历信息"><span>设置推荐</span></a></li>
+            <li><a class="icon"  href="javascript:navTabPageBreak()"><span>刷新</span></a></li>
+        </ul>
+    </div>
+    <table class="table" width="100%" layoutH="110">
+        <thead>
+            <tr>
+                <th align="center" width="50">简历id</th>
+                <th>姓名</th>
+                <th>电话</th>                
+                <th>邮箱</th>
+                <th>年龄</th>
+                <th>性别</th>
+                <th>婚姻状况</th>
+                <th>学历</th>
+                <th>毕业学校</th>
+                <th>投递状态</th>
+                <th>籍贯</th>
+                <th>是否公开</th>
+                <th>是否推荐</th>
+            </tr>
+        </thead>
+        <tbody>
+            <volist name="list" id="vo">
+                <tr target="item_id" rel="{$vo.id}">
+                    <td>{$vo.id}</td>
+                    <td>{$vo.name}</td>
+                    <td>{$vo.phone}</td>
+                    <td>{$vo.email}</td> 
+                    <td>{$vo.age}</td>
+                    <td><if condition="$vo.sex eq 1">男<else />女</if></td>
+                    <td><if condition="$vo.is_marry eq 0">保密<elseif condition="$vo.is_marry eq 1"/>未婚<else />已婚</if></td>
+                    <td>{$vo.education}</td>
+                    <td>{$vo.school}</td>
+                    <td><if condition="$vo.work_status eq 0">在职，看看新机会<elseif condition="$vo.work_status eq 1"/>在职，急寻新工作<elseif condition="$vo.work_status eq 2"/>在职，暂无跳槽打算<else/>离职，正在找工作</if></td>
+                    <td>{$vo.province}-{$vo.city}</td>
+                    <td>
+                        <if condition="$vo.is_show eq 0">不公开<else/>公开</if>
+                    </td>
+                    <td>
+                        <if condition="$vo.is_recommend eq 0">不推荐<else/>推荐</if>
+                    </td>
+                </tr>
+            </volist>
+        </tbody>
+    </table>
+    <div class="panelBar">
+        <div class="pages">
+            <span>显示</span>
+            <select class="combox" name="numPerPage" onchange="navTabPageBreak({$Think.config.TMPL_L_DELIM}numPerPage:this.value{$Think.config.TMPL_R_DELIM})">
+                <option value="5" <if condition="$numPerPage eq 5">selected</if>>5</option>
+                <option value="10" <if condition="$numPerPage eq 10">selected</if>>10</option>
+                <option value="15" <if condition="$numPerPage eq 15">selected</if>>15</option>
+                <option value="20" <if condition="$numPerPage eq 20">selected</if>>20</option>
+                <option value="25" <if condition="$numPerPage eq 25">selected</if>>25</option>
+                <option value="30" <if condition="$numPerPage eq 30">selected</if>>30</option>
+            </select>
+            <span>共{$totalCount}条</span>
+        </div>
+        <div class="pagination" targetType="navTab" totalCount="{$totalCount}" numPerPage="{$numPerPage}" pageNumShown="{$pageNumShown}" currentPage="{$currentPage}"></div>
+
+    </div>
+</div>

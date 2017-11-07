@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+{/* 公共资源目录 */}
+<assign name="path" value="__PUBLIC__/Home" />
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="shortcut icon" href="{$path}/images/favicon.ico" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <block name="title"><title>标题</title></block>
+    <block name="css">
+      <style type="text/css">
+      body { padding-top:60px; overflow-y:scroll;}
+      form,div{
+        margin:0;
+        padding:0;
+      }
+        .online-resume{
+          height:50px;
+          margin-top:50px;
+        }
+
+        .resume-border{
+          border:1px solid #dddddd;
+        }
+
+        #umessage{
+          margin-top:10px;
+          background-color:#eee;
+        }
+        .text-muted a:hover{
+            text-decoration: none;
+            color:#777777;
+        }
+        .text-muted a{
+            color:#777777;
+        }
+      </style>
+    <script src="{$path}/js/jquery-1.8.3.min.js"></script>
+    <block name="js"></block>
+    </block>
+    <!-- Bootstrap -->
+    <link href="{$path}/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <block name="body"><body></block>
+    <!-- 导航开始 -->
+    <block name="nav">导航</block>
+    <!-- 导航结束 -->
+    <!-- 页面主体  -->
+    <div class="container">
+      <!-- 页面主体头部 -->
+      <block name="top">内容主体头部</block>
+      <!-- 页面主体头部结束 -->
+      <div class="row">
+        <!-- 页面主内容 -->
+        <block name="main">页面主内容</block>
+        <!-- 页面主内容结束 -->
+        <!-- 右边分栏 -->
+        <block name="right">右边分栏</block>
+        <!-- 右边分栏结束 -->
+      </div>
+      <!-- 底部版权 -->
+      <block name="footer">底部</block>
+      <!-- 底部版权结束 -->
+    </div>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="{$path}/js/jquery.min.js"></script>
+     
+    <!-- <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script> -->
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="{$path}/js/bootstrap.min.js"></script>
+  </body>
+</html>

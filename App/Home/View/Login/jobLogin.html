@@ -1,0 +1,55 @@
+<extend name="Common:login" />
+  <block name="title">
+    <title>求职者登录-{$sysInfo.title}</title>
+  </block>
+  <!-- 导航开始 -->
+  <block name="nav">
+    <include file="Common:header" />
+  </block>
+  <!-- 导航结束 -->
+  <!-- 页面主体  -->
+  <block name="main">
+    <div class="panel panel-default">
+      <div class="panel-body" style="margin-top:100px;margin-bottom:100px;">
+        <div class="login-title text-center">
+          <h3>欢迎您登录IT招聘网~求职者账号</h3>
+        </div>
+        <form action="{:U('Home/Login/checkJobLogin')}" method="post" class="col-md-offset-4 col-md-4">
+          <div class="form-group">
+            <div class="input-group">
+              <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+              <input type="text" id="username" name="contact" class="form-control" value="" placeholder="请输入您的手机号码">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
+              <input type="password" id="password" name="password" class="form-control" placeholder="请输入您的密码">
+            </div>
+          </div>
+          <span align="center" class="center-block" style="color:red;margin-bottom:10px;">{$errorinfo}</span>
+          <div class="form-group">
+            <div class="col-md-4 col-md-offset-4 ">
+              <button type="submit" class="btn btn-sm btn-info col-md-12">登录</button>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-6 link">
+              <p class="text-center remove-margin"><small>忘记密码？</small> <a href="{:U('Home/Register/retrieveJobPw')}" ><small>找回</small></a>
+              </p>
+            </div>
+            <div class="col-md-6 link">
+              <p class="text-center remove-margin"><small>没有账号?</small> <a href="{:U('Home/Register/jobRegister')}" ><small>马上注册</small></a>
+              </p>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </block>
+  <!-- 页面主体结束 -->
+  <!-- 底部版权 -->
+  <block name="footer">
+    <include file="Common:footer" />
+  </block>
+  <!-- 底部版权结束 -->

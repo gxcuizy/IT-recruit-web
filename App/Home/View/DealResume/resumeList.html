@@ -1,0 +1,121 @@
+<extend name="Common:core" />
+  <block name="title">
+    <title>收到简历管理-{$sysInfo.title}</title>
+  </block>
+  <!-- 导航开始 -->
+  <block name="nav">
+    <include file="./Common/header" />
+  </block>
+  <!-- 导航结束 -->
+  <!-- 左边导航开始 -->
+  <block name="left">
+    <div class="col-md-3" style="border-top:1px solid #ddd;">
+      <div style="margin-top:10px;">
+        <img src="{$path}/uploads/enterprise/photo/{$_SESSION['ITUser']['en_photo']}" alt="头像" class="img-circle center-block" width="160" height="160" style="margin-bottom:10px;">
+        <p class="text-muted text-center"><strong>{$_SESSION['ITUser']['en_name']}</strong></p>
+      </div>
+      <ul class="nav nav-pills nav-stacked">
+        <li role="presentation"><a href="{:U('Home/Enterprise/index')}">个人中心</a></li>
+        <li role="presentation"><a href="{:U('Home/EnApply/listApply')}">招聘管理</a></li>
+        <li role="presentation" class="active"><a href="{:U('Home/DealResume/index')}">简历管理</a></li>
+        <li role="presentation"><a href="{:U('Home/Enterprise/setEnInfo')}">企业管理</a></li>
+        <li role="presentation"><a href="{:U('Home/Enterprise/updatePw')}">修改密码</a></li>
+      </ul>
+    </div>
+  </block>
+  <!-- 左边导航结束 -->
+  <!-- 右边主体 -->
+  <block name="main">
+    <div class="col-md-9 resume-border">
+      <div class="online-resume">
+        <h3>求职者投递的简历管理</h3>
+      </div>
+      <!-- 简历右边导航选项卡 -->
+      <ul class="nav nav-tabs">
+        <li role="presentation" class="active"><a href="{:U('Home/DealResume/index')}">简历列表</a></li>
+        <li role="presentation" ><a href="{:U('Home/Invite/inviteEn')}">邀请面试列表</a></li>
+      </ul>
+      <!-- 简历右边导航选项卡结束 -->
+      <!-- 我的信息 -->
+      <div class="alert alert-info" role="alert" id="umessage">
+        <span>收到的简历列表</span>
+      </div>
+      <!-- 基本信息 -->
+      <div class="panel panel-default">
+        <div class="panel-body table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr class="success">
+                <th>姓名</th>
+                <th>应聘职位</th>
+                <th>性别</th>
+                <th>年龄</th>
+                <th>学历</th>
+                <th>投递日期</th>
+                <th>应聘状态</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <volist name="resume" id="vo">
+                <tr>
+                  <td>
+                    <span><a href="{:U('Home/DealResume/myResume','id='.$vo['uid'])}" >{$vo.name}</a></span>
+                  </td>
+                  <td>
+                    <span><a href="{:U('Home/Apply/applyDetails','id='.$vo['aid'])}" target="_black">{$vo.job_name}</a></span>
+                  </td>
+                  <td>
+                    <span>
+                        <if condition="$vo.sex eq 0">女<else/>男</if>
+                    </span>
+                  </td>
+                  <td>
+                    <span>{$vo.age}</span>
+                  </td>
+                  <td>
+                    <span>{$vo.education}</span>
+                  </td>
+                  <td>
+                    <span>{$vo.time|date="Y-m-d H:i:s",###}</span>
+                  </td>
+                  <td>
+                    <span>
+                        <switch name="vo.feedback_status">
+                            <case value="0">未处理</case>
+                            <case value="1">邀请面试</case>
+                            <case value="2">不合格</case>
+                            <case value="3">成功入职</case>
+                        </switch>
+                    </span>
+                  </td>
+                  <td>
+                    <if condition="$vo.feedback_status eq 0">
+                        <span><a href="{:U('Home/DealResume/change',array('status'=>1,'id'=>$vo['id']))}"><button type="button" class="btn btn-info btn-xs">邀请面试</button></a></span>
+                        <span><a href="{:U('Home/DealResume/change',array('status'=>2,'id'=>$vo['id']))}"><button type="button" class="btn btn-danger btn-xs">暂不合格</button></span>
+                    <elseif condition="$vo.feedback_status eq 1"/>
+                        <span><a href="{:U('Home/DealResume/change',array('status'=>3,'id'=>$vo['id']))}"><button type="button" class="btn btn-info btn-xs">面试成功</button></a></span>
+                        <span><a href="{:U('Home/DealResume/change',array('status'=>2,'id'=>$vo['id']))}"><button type="button" class="btn btn-danger btn-xs">暂不合格</button></span>
+                    </if>
+                    <a href="{:U('Home/DealResume/delete','id='.$vo['id'])}" title="删除这条应聘简历"><span class="glyphicon glyphicon-trash" style="margin-left:10px;"></span></a>
+                  </td>
+                </tr>
+              </volist>
+            </tbody>
+          </table>
+          <nav>
+            <ul class="pager">
+              <li class='<if condition="$page eq 1">disabled</if>'><a href="{:U('DealResume/index',array('page'=>($page-1)))}">上一页</a></li>
+              <li class='<if condition="$page eq $total">disabled</if>'><a href="{:U('DealResume/index',array('page'=>($page+1)))}">下一页</a></li>
+            </ul>
+          </nav> 
+        </div>
+      </div>
+      <!-- 基本信息面板结束 -->
+    </div>
+  </block>
+  <!-- 底部版权 -->
+  <block name="footer">
+    <include file="./Common/footer" />
+  </block>
+  <!-- 底部版权结束 -->

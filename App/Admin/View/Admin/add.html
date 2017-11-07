@@ -1,0 +1,37 @@
+<div class="pageContent">
+	<form method="post" action="__URL__/insert/navTabId/listAdmin/callbackType/closeCurrent"  class="pageForm required-validate" 
+		onsubmit="return validateCallback(this,dialogAjaxDone);">
+		<div class="pageFormContent" layoutH="58">
+			<dl>
+				<dt>用户名：</dt>
+				<dd><input type="text" class="required" minlength="2" maxlength="17"  style="width:100%" name="admin_name" /></dd>
+			</dl>
+			<dl>
+				<dt>所属角色：</dt>
+				<dd>
+					<select name="role_id">
+						<option value="">请选择所属角色</option>
+							<volist name="roleList" id="rl">
+							<option value="{$rl.id}">{$rl.name}</option>
+						</volist>
+					</select>
+				</dd>
+			</dl>
+			<dl>
+				<dt>用户密码：</dt>
+				<dd><input type="password" minlength="6" maxlength="17" class="required" style="width:100%" name="admin_password" alt="密码长度为6-17位" /></dd>
+			</dl>
+			<dl>
+				<dt>确认密码：</dt>
+				<dd><input type="password" minlength="6" maxlength="17" class="required" style="width:100%" name="password" alt="密码长度为6-17位" /></dd>
+			</dl>
+		</div>
+		<div class="formBar">
+			<ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">确定添加</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+</div>
+

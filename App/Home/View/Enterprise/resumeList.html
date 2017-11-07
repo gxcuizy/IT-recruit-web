@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+{/* 公共资源的目录 */}
+<assign name="path" value="__PUBLIC__/Home" />
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="shortcut icon" href="{$path}/images/favicon.ico" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>收到简历管理-{$sysInfo.title}</title>
+    <style type="text/css">
+
+    body { padding-top:60px; overflow-y:scroll;}
+
+      form,div{
+        margin:0;
+        padding:0;
+      }
+
+      .online-resume{
+        height:50px;
+        margin-top:50px;
+      }
+
+      .resume-border{
+        border:1px solid #dddddd;
+      }
+
+      #umessage{
+        margin-top:10px;
+        background-color:#eee;
+      }
+    </style>
+    <!-- Bootstrap -->
+    <link href="{$path}/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <!-- 导航开始 -->
+    <include file="./Common/header" />
+    <!-- 导航结束 -->
+    <!-- 右边主体 -->
+    <div class="container">
+      <!-- 左边导航开始 -->
+      <div class="col-md-3" style="border-top:1px solid #ddd;">
+        <div style="margin-top:10px;">
+          <img src="{$path}/uploads/enterprise/photo/{$_SESSION['ITUser']['en_photo']}" alt="头像" class="img-circle center-block" width="160" height="160" style="margin-bottom:10px;">
+          <p class="text-muted text-center">{$_SESSION['ITUser']['username']}</p>
+        </div>
+        <ul class="nav nav-pills nav-stacked">
+          <li role="presentation"><a href="__URL__/index">个人中心</a></li>
+          <li role="presentation"><a href="__MODULE__/EnApply/listApply">招聘管理</a></li>
+          <li role="presentation"  class="active"><a href="__URL__/resumeList">简历管理</a></li>
+          <li role="presentation"><a href="__URL__/setEnInfo">企业管理</a></li>
+          <li role="presentation"><a href="__URL__/updatePw">修改密码</a></li>
+        </ul>
+      </div>
+      <!-- 左边导航结束 -->
+      <!-- 右边主体 -->
+      <div class="col-md-9 resume-border">
+        <div class="online-resume">
+          <h3>求职者投递的简历管理</h3>
+        </div>
+        <!-- 简历右边导航选项卡 -->
+        <ul class="nav nav-tabs">
+          <li role="presentation" class="active"><a href="resumeList.html">简历列表</a></li>
+        </ul>
+        <!-- 简历右边导航选项卡结束 -->
+        <!-- 我的信息 -->
+        <div class="alert alert-info" role="alert" id="umessage">
+          <span>收到的简历列表</span>
+        </div>
+        <!-- 基本信息 -->
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <table class="table table-hover">
+              <thead>
+                <tr class="success">
+                  <th>姓名</th>
+                  <th>应聘职位</th>
+                  <th>性别</th>
+                  <th>年龄</th>
+                  <th>学历</th>
+                  <th>工作状态</th>
+                  <th>投递日期</th>
+                  <th>应聘状态</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <span><a href="myResume.html">小明</a></span>
+                  </td>
+                  <td>
+                    <span>PHP高级工程师</span>
+                  </td>
+                  <td>
+                    <span>男</span>
+                  </td>
+                  <td>
+                    <span>10</span>
+                  </td>
+                  <td>
+                    <span>研究生</span>
+                  </td>
+                  <td>
+                    <span>非在职</span>
+                  </td>
+                  <td>
+                    <span>2015-02-04 09:12:34</span>
+                  </td>
+                  <td>
+                    <span>未处理</span>
+                  </td>
+                  <td>
+                    <span><button type="button" class="btn btn-info btn-xs">邀请面试</button></span>
+                    <span><button type="button" class="btn btn-danger btn-xs">暂不合格</button></span>
+                    <a href="" title="删除这条应聘简历"><span class="glyphicon glyphicon-trash" style="margin-left:10px;"></span></a>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <span><a href="myResume.html">小明</a></span>
+                  </td>
+                  <td>
+                    <span>PHP高级工程师</span>
+                  </td>
+                  <td>
+                    <span>男</span>
+                  </td>
+                  <td>
+                    <span>10</span>
+                  </td>
+                  <td>
+                    <span>研究生</span>
+                  </td>
+                  <td>
+                    <span>非在职</span>
+                  </td>
+                  <td>
+                    <span>2015-02-04 09:12:34</span>
+                  </td>
+                  <td>
+                    <span>未处理</span>
+                  </td>
+                  <td>
+                    <span><button type="button" class="btn btn-info btn-xs">邀请面试</button></span>
+                    <span><button type="button" class="btn btn-danger btn-xs">暂不合格</button></span>
+                    <a href="" title="删除这条应聘简历"><span class="glyphicon glyphicon-trash" style="margin-left:10px;"></span></a>
+                  </td>
+                </tr>
+              </tbody>
+            </table> 
+          </div>
+        </div>
+        <!-- 基本信息面板结束 -->
+      </div>
+      <!-- 底部版权 -->
+      <include file="./Common/footer" />
+      <!-- 底部版权结束 -->
+    </div>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+     <script src="{$path}/js/jquery.min.js"></script>
+     
+   <!-- <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script> -->
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="{$path}/js/bootstrap.min.js"></script>
+  </body>
+</html>

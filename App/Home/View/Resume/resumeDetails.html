@@ -1,0 +1,121 @@
+<extend name="Common/login"/>
+    <block name="title"><title>简历详情-{$sysInfo.title}</title></block>
+    <!-- 导航开始 -->
+    <block name="nav"><include file="Common/header"/></block>
+    <!-- 导航结束 -->
+    <!-- 页面主体  -->
+    <block name="main">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <div class="col-md-offset-1 col-md-10">
+        <!-- 简历右边导航选项卡结束 -->
+        <!-- 我的简历信息 -->
+        <div class="alert" role="alert" id="umessage">
+          <span><strong>求职人员简历详情</strong></span>
+          <notempty name="res">
+            <a href="#" type="button" class="btn btn-warning pull-right" style="margin:-6px 10px 0 0;"><span class="glyphicon glyphicon-heart-empty"><strong>{$res}</strong></span></a>
+          <else/>
+            <a href="{:U('Resume/check',array('id'=>$list['id']))}" type="button" class="btn btn-warning pull-right" style="margin:-6px 10px 0 0;"><span class="glyphicon glyphicon-heart-empty"><strong>邀请面试</strong></span></a>
+          </notempty>
+        </div>
+        <!-- 姓名、公司、照片等信息面板 -->
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="media">
+              <div class="media-left">
+                <img src="{$path}/uploads/jobhunter/photo/{$list.photo}" alt="" width="100">
+              </div>
+              <div class="media-body">
+                <h3 style="margin-top:5px;">{$list.name}</h3>
+                <h5 style="margin-top:15px;">期望职位：{$list.love_job}</h5>
+                <h5 style="margin-top:20px;">原籍：{$list.province}{$list.city}{$list.county}</h5>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- 姓名、公司、照片面板结束 -->
+        <!-- 基本信息 -->
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <span class="glyphicon glyphicon-user"> <strong>基本信息</strong></span>
+          </div>
+          <div class="panel-body">
+            <form class="form-horizontal">
+              <div class="form-group">
+                <div class="col-md-4">
+                  <label>电话：</label>{$list.phone}
+                </div>
+                <div class="col-md-4">
+                  <label>邮箱：</label>{$list.email}
+                </div>
+                <div class="col-md-4">
+                  <label>年龄：</label>{$list.age}
+                </div>
+                <div class="col-md-4">
+                  <label>性别：</label><if condition="$list.sex eq 0">女<else/>男</if>
+                </div>
+                <div class="col-md-4">
+                  <label>婚姻状况：</label>
+                  <switch name="list.is_marry">
+                      <case value="0">保密</case>
+                      <case value="1">未婚</case>
+                      <case value="2">已婚</case>
+                  </switch>
+                </div>
+                <div class="col-md-4">
+                  <label>学历：</label>{$list.education}
+                </div>
+                 <div class="col-md-4">
+                  <label>毕业学校：</label>{$list.school}
+                </div>
+                 <div class="col-md-4">
+                  <label>工作状态：</label>
+                  <switch name="list.work_status">
+                      <case value="0">在职，看看新机会</case>
+                      <case value="1">在职，急寻新工作</case>
+                      <case value="2">在职，暂无跳槽打算</case>
+                      <case value="3">离职，正在找工作</case>
+                  </switch>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <!-- 基本信息面板结束 -->
+        <!-- 工作经验 -->
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <span class="glyphicon glyphicon-road"> <strong>工作经验</strong></span>
+          </div>
+          <div class="panel-body">
+            {$list.work_experience}
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <span class="glyphicon glyphicon-blackboard"> <strong>项目开发经历</strong></span>
+          </div>
+          <div class="panel-body">
+            {$list.dev_experience}
+          </div>
+        </div>
+        <!-- 工作经验面板结束 -->
+         <!-- 自我评价 -->
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <span class="glyphicon glyphicon-eye-open"> <strong>自我评价</strong></span>
+          </div>
+          <div class="panel-body">
+            {$list.self_evaluation}
+          </div>
+        </div>
+        <!-- 自我评价面板结束 -->
+      </div>
+        </div>
+      </div>
+    </block>
+      <!-- 底部版权 -->
+    <block name="footer">
+      <include file="Common/footer"/>
+    </block>
+      <!-- 底部版权结束 -->

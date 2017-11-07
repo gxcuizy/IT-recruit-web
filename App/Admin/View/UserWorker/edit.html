@@ -1,0 +1,44 @@
+<div class="pageContent">
+	<form method="post" action="__URL__/update/navTabId/listWorker/callbackType/closeCurrent"  class="pageForm required-validate" 
+		onsubmit="return validateCallback(this,dialogAjaxDone);">
+		<input type="hidden" name="id" value="{$vo.id}" />
+		<div class="pageFormContent" layoutH="58">
+			<dl>
+				<dt>用&nbsp;&nbsp;户&nbsp;&nbsp;名：</dt>
+				<dd><input type="text" class="required" minlength="2" value="{$vo.username}"  style="width:100%" name="username" alt="请输入11位数字" /></dd>
+			</dl>
+			<dl>
+				<dt>手机号码：</dt>
+				<dd><input type="text" class="required phone" value="{$vo.contact}"  style="width:100%" name="contact" alt="请输入11位数字" /></dd>
+			</dl>
+			<dl>
+				<dt>新&nbsp;&nbsp;密&nbsp;&nbsp;码：</dt>
+				<dd><input type="password" minlength="6" maxlength="17" class="required alphanumeric" style="width:100%" name="password" alt="密码长度为6-17位" /></dd>
+			</dl>
+			<dl>
+				<dt>确认密码：</dt>
+				<dd><input type="password" minlength="6" maxlength="17" class="required alphanumeric" style="width:100%" name="repassword" alt="密码长度为6-17位" /></dd>
+			</dl>
+			<dl>
+				<dt>允许投递简历：</dt>
+				<dd>
+					<input type="radio" value="1" name="allow_admin" id="y" checked />允许
+					<input type="radio" value="0" name="allow_admin" id="n" />禁止
+				</dd>
+			</dl>
+			<dl>
+				<dd>
+					<input type="hidden"  size="10" value="0" name="type"/>
+					
+				</dd>
+			</dl>
+		</div>
+		<div class="formBar">
+			<ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">更改</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+</div>
+

@@ -1,0 +1,75 @@
+<div class="pageHeader">
+	<div class="searchBar">
+		<table class="searchContent">
+			<tr>
+				<td>
+					您正在为用户组角色： <strong>{$name}</strong> 分配权限  
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>
+<div class="">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<li><a class="add"><span>以下为可以分配的权限</span></a></li>
+		</ul>
+	</div>
+	<form method="post" action="__MODULE__/Access/setAccess" onsubmit="return validateCallback(this, dialogAjaxDone)">
+		<div class="pageFormContent" layoutH="120">
+			<volist name="accessdata" id="vo">
+				<if condition="$vo.level eq '1'">
+					<div style="display:block;clear:both;width:100%;"><label style="width:160px;">
+						<input type="checkbox" id="{$vo.id}" name="access[]" value="{$vo.id}" pid="{$vo.pid}" level="{$vo.level}" <if condition="in_array($vo['id'],$nodelist)">checked</if> />
+						<b>【应用】</b>{$vo.title}</label></div><br /><br />
+	                <elseif condition="$vo.level eq '2'" />
+						<div style="display:block;clear:both;margin-left:30px;width:100%;"><label style="width:160px;">
+							<input type="checkbox" id="{$vo.id}" name="access[]" value="{$vo.id}"pid="{$vo.pid}" level="{$vo.level}" <if condition="in_array($vo['id'],$nodelist)">checked</if> />
+							<b>【模块】</b>{$vo.title}</label></div><br /><br />
+						<volist name="vo['node']" id="svo">
+							<div style="display:block;float:left;margin-left:60px;"><label style="width:160px;">
+								<input type="checkbox" id="{$svo.id}" name="access[]" pid="{$svo.pid}" value="{$svo.id}" level="{$svo.level}" <if condition="in_array($svo['id'],$nodelist)">checked</if> />
+								<b>【操作】</b>{$svo.title}</label></div>
+						</volist>
+					</if>
+				</if>
+			</volist>
+			<input type="hidden" name="rid" value="{$rid}" />
+		</div>
+		<div class="formBar">
+			<label style="float:left"><input type="checkbox" class="checkboxCtrl" group="access[]" />全选</label>
+			<ul>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="checkboxCtrl" group="access[]" selectType="invert">反选</button></div></div></li>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">确定分配</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+</div>
+<script>
+	$(function(){
+		$("input").click(function(){
+			var level=$(this).attr("level");
+			if(level==1){
+				var inputs=$('.pageFormContent input');
+				$(this).attr('checked') ? inputs.attr('checked',true) : inputs.removeAttr('checked');
+			}else if(level==2){
+				var id=$(this).attr('id');
+				// 勾选操作
+				var  inputs = $('input[pid='+id+']');
+				$(this).attr('checked') ? inputs.attr('checked',true) : inputs.removeAttr('checked');
+				// 勾选应用
+				var pid = $(this).attr('pid');
+				var inputs = $('input[id='+pid+']').attr('checked',true);
+			}else  if(level==3 || level==4){
+			    if($(this).attr('checked')){
+					// 勾选模块
+					var pid = $(this).attr('pid');
+					var inputs = $('input[id='+pid+']').attr('checked',true);
+					// 勾选应用
+					var ppid = $('input[id='+pid+']').attr('pid');
+					$('input[id='+ppid+']').attr('checked',true);
+			    }
+			}
+		});
+	});
+</script>

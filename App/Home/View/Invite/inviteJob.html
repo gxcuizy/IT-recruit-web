@@ -1,0 +1,152 @@
+<extend name="Common:core" />
+  <block name="title">
+    <title>职位管理-{$sysInfo.title}</title>
+  </block>
+    <!-- 导航开始 -->
+    <block name="nav">
+      <include file="Common:header" />
+    </block>
+    <!-- 导航结束 -->
+    <!-- 右边主体 -->
+    <!-- 左边导航开始 -->
+    <block name="left">
+      <div class="col-md-3" style="border-top:1px solid #ddd;">
+        <div style="margin-top:10px;">
+          <img src="{$path}/uploads/jobhunter/photo/{$_SESSION['ITUser']['photo']}" alt="头像" class="img-circle center-block" width="150" height="150">
+          <p class="text-muted text-center" style="margin-top:10px;"><strong>{$_SESSION['ITUser']['username']}</strong></p>
+        </div>
+        <ul class="nav nav-pills nav-stacked">
+          <li role="presentation"><a href="{:U('Home/Jobhunter/index')}">个人简历</a></li>
+          <li role="presentation" class="active"><a href="{:U('Home/Jobhunter/applyList')}">职位管理</a></li>
+          <li role="presentation"><a href="{:U('Home/Jobhunter/favoritesJob')}">收藏列表</a></li>
+          <li role="presentation"><a href="{:U('Home/Jobhunter/updatePw')}">修改密码</a></li>
+        </ul>
+      </div>
+    </block>
+    <!-- 左边导航结束 -->
+    <!-- 右边主体 -->
+    <block name="main">
+      <div class="col-md-9 resume-border">
+        <div class="online-resume">
+          <h3>企业邀请面试信息管理</h3>
+        </div>
+        <!-- 简历右边导航选项卡 -->
+        <ul class="nav nav-tabs">
+          <li role="presentation"><a href="{:U('Home/Jobhunter/applyList')}">我投递的职位</a></li>
+          <li role="presentation" class="active"><a href="{:U('Home/Invite/inviteJob')}">企业邀请面试信息</a></li>
+        </ul>
+        <!-- 简历右边导航选项卡结束 -->
+        <!-- 我的信息 -->
+        <div class="alert alert-info" role="alert" id="umessage">
+          <span>企业邀请面试信息列表</span>
+        </div>
+        <!-- 基本信息 -->
+        <div class="panel panel-default">
+          <div class="panel-body table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr class="success">
+                  <th>企业名称</th>
+                  <th>企业规模</th>
+                  <th>联系方式</th>
+                  <th>邀请时间</th>
+                  <th>面试状态</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <volist name="inviteList" id="vo">
+                  <tr>
+                    <td>
+                      <span><a href="{:U('Home/EnterpriseList/enterprise','id='.$vo['id'])}" target="_black">{$vo.en_name}</a></span>
+                    </td>
+                    <td>
+                      <span>{$vo.en_scale}</span>
+                    </td>
+                    <td>
+                      <span>{$vo.phone}</span>
+                    </td>
+                    <td>
+                      <span>{$vo.invite_time|date="Y-m-d H:i:s",###}</span>
+                    </td>
+                    <td>
+                      <span>
+                        <switch name="vo.status">
+                          <case value='0'>未处理</case>
+                          <case value="1">正在面试中</case>
+                          <case value="2">已拒绝面试</case>
+                          <case value="3">恭喜入职</case>
+                          <case value="4">面试失败</case>
+                        </switch>
+                      </span>
+                    </td>
+                    <td>
+                      <eq name="vo.status" value='0'>
+                        <span><a type="button" class="btn btn-info btn-xs" href="{:U('Home/Invite/doInviteJob',array('id'=>$vo['iid'],'status'=>'1'))}">接受面试</a></span>
+                        <span><a type="button" class="btn btn-danger btn-xs" href="{:U('Home/Invite/doInviteJob',array('id'=>$vo['iid'],'status'=>'2'))}">拒绝面试</a></span>
+                        <a href="{:U('Home/Invite/delInvite',array('id'=>$vo['iid']))}" title="删除这条面试邀请"><span class="glyphicon glyphicon-trash" style="margin-left:10px;"></span></a>
+                      <else />
+                        <a href="{:U('Home/Invite/delInvite',array('id'=>$vo['iid']))}" title="删除这条面试邀请"><span class="glyphicon glyphicon-trash" style="margin-left:10px;"></span></a>
+                      </eq>
+
+                      <switch name="vo.status">
+                        <case value='0'>
+                          
+                        </case>
+                        </case>
+                      </switch>
+                    </td>
+                  </tr>
+                </volist>
+                <tr>
+                  <td colspan="8" align="center">
+                    <ul class="pagination">
+                      <eq name="page" value="1" >
+                        <li class="disabled">
+                        <a href="#">
+                          <span aria-hidden="true">上一页</span>
+                        </a>
+                      </li>
+                      <else />
+                        <li>   
+                          <a href="{:U('Home/Invite/inviteJob/',array('page'=>($page-1)))}">
+                            <span aria-hidden="true">上一页</span>
+                          </a>
+                        </li>
+                      </eq>
+                      <!-- 页码小于8 -->            
+                      <lt name="pageCount" value="8">
+                        <for start="1" end="$pageCount+1">
+                          <li <eq name="i" value="$page" >class="active"</eq>>
+                            <a href="{:U('Home/Invite/inviteJob/',array('page'=>$i))}">{$i}</a>
+                          </li>
+                        </for>
+                      </lt>
+                      <if condition="($page eq $pageCount) OR ($pageCount eq '0')">
+                        <li class="disabled">
+                        <a href="#">
+                          <span aria-hidden="true">下一页</span>
+                        </a>
+                      </li>
+                      <else />
+                        <li>
+                          <a href="{:U('Home/Invite/inviteJob/',array('page'=>($page+1)))}">
+                            <span aria-hidden="true">下一页</span>
+                          </a>
+                        </li>
+                      </if>
+                    </ul>
+                  </td>
+                </tr>
+              </tbody>
+            </table> 
+          </div>
+        </div>
+        <!-- 基本信息面板结束 -->
+      </div>
+    </block>
+    <!-- 底部版权 -->
+    <block name="footer">
+      <include file="Common:footer" />
+    </block>
+    <!-- 底部版权结束 -->

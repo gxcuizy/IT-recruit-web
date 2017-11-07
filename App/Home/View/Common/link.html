@@ -1,0 +1,11 @@
+<div class="row visible-md-block visible-lg-block" style="font-size:12px;">
+	<div class="col-md-12" style="border-bottom:2px solid turquoise;margin:0 0 10px 0;">
+		<h4><span class="glyphicon glyphicon-link">友情链接</span></h4>
+	</div>
+	<volist name="linkList" id="vo">
+		<div class="col-md-1" style="margin-bottom:5px;">
+			<span><a style="color:#555;" href="{$vo.link_url}" target="_blank">{$vo.link_title}</a></span>
+		</div>
+	</volist>
+	
+</div>

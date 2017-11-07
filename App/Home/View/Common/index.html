@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+{/* 公共资源的目录 */}
+<assign name="path" value="__PUBLIC__/Home" />
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="shortcut icon" href="{$path}/images/favicon.ico" type="image/x-icon" />
+    <script src="{$path}/js/jquery-1.8.3.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <block name="title"><title>标题</title></block>
+    <style type="text/css">
+      body { padding-top:60px;overflow-y:scroll; }
+      form,div{
+        margin:0;
+        padding:0;
+      }
+
+      .online-resume{
+        height:50px;
+        margin-top:50px;
+      }
+
+      .resume-border{
+        border:1px solid #dddddd;
+      }
+
+      #umessage{
+        margin-top:10px;
+        background-color:#eee;
+      }
+
+      .text-muted a:hover{
+          text-decoration: none;
+          color:#777777;
+      }
+
+      .text-muted a{
+        color:#777777;
+      }
+    </style>
+    <script type="text/JavaScript">
+      $(function(){
+          $("#input").focus(function(){
+              $("#did").css({display:'block'});
+          })
+          $("body").click(function(event) {
+              if (event.target.id != "input") {
+                  $("#did").css({display:'none'});
+              }
+          });
+      });
+    </script>
+    <block name="js"></block>
+    <!-- Bootstrap -->
+    <link href="{$path}/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{$path}/css/index.css" rel="stylesheet">
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <block name="nav">导航</block>
+    <block name="slide">轮播</block>
+    <div class="container">
+      <block name="search">搜索框</block>
+      <block name="main">页面主体</block>
+      <block name="link">友情链接</block>
+      <block name="footer">底部版权</block>
+    </div>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+     <script src="{$path}/js/jquery.min.js"></script>
+     
+   <!-- <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script> -->
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="{$path}/js/bootstrap.min.js"></script>
+  </body>
+</html>

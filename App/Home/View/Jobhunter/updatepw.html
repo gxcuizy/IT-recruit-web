@@ -1,0 +1,126 @@
+<extend name="Common/core"/>
+<block name="title"><title>修改密码-{$sysInfo.title}</title></block>
+    <!-- 导航开始 -->
+    <block name="js">
+        <script type="text/javascript">
+            $(function(){
+                //验证原密码
+                $("input[name='password']").blur(function(){
+                    var pw =$("input[name='password']").val();
+                    $("input[name='password']+span").remove();
+                    if(pw.length<1){
+                      var str = "<span style='color:red;'>密码不能为空！</span>";
+                      $("input[name='password']").after(str);
+                      $("#form").attr("onsubmit","return false");
+                    }else{
+                      $("#form").attr("onsubmit","");
+                    }
+                });
+
+              //验证新密码
+              $("input[name='newPassword']").blur(function(){
+              var name = $("input[name='newPassword']").val();
+              $("input[name='newPassword']+span").remove();
+              if(name.match(/^\w{6,17}$/)==null){
+                  var str = "<span style='color:red'>请输入6-17位数字、字母，不支持空格!</span>";
+                  $("input[name='newPassword']").after(str);
+                   $("#form").attr("onsubmit","return false");
+                  }else{
+                   $("#form").attr("onsubmit","");
+                 }
+               });
+
+              //验证重复密码
+              $("input[name='againPassword']").blur(function(){
+              var na = $("input[name='againPassword']").val();
+              $("input[name='againPassword']+span").remove();
+              if(na.match(/^\w{6,17}$/)==null){
+                  var str = "<span style='color:red'>请输入6-17位数字、字母，不支持空格!</span>";
+                  $("input[name='againPassword']").after(str);
+                   $("#form").attr("onsubmit","return false");
+                  }else{
+                    var aa = $("input[name='newPassword']").val();
+                    if(na==aa){
+                        $("#form").attr("onsubmit","");
+                    }else{
+                      var str = "<span style='color:red'>密码不一致!</span>";
+                      $("input[name='againPassword']").after(str);
+                      $("#form").attr("onsubmit","return false");
+                    }
+                 }
+               });
+
+            });
+        </script>
+    </block>
+    <block name="nav">
+      <include file="Common/header"/>
+    </block>
+    <!-- 导航结束 -->
+    <!-- 右边主体 -->
+    <!-- 左边导航开始 -->
+    <block name="left">
+      <div class="col-md-3" style="border-top:1px solid #ddd;">
+        <div style="margin-top:10px;">
+          <img src="{$path}/uploads/jobhunter/photo/{$_SESSION['ITUser']['photo']}" alt="头像" class="img-circle center-block" width="150" height="150">
+          <p class="text-muted text-center" style="margin-top:10px;"><strong>{$_SESSION['ITUser']['username']}</strong></p>
+        </div>
+        <ul class="nav nav-pills nav-stacked">
+          <li role="presentation"><a href="{:U('Home/Jobhunter/index')}">个人简历</a></li>
+          <li role="presentation"><a href="{:U('Home/Jobhunter/applyList')}">职位管理</a></li>
+          <li role="presentation"><a href="{:U('Home/Jobhunter/favoritesJob')}">收藏列表</a></li>
+          <li role="presentation" class="active"><a href="{:U('Home/Jobhunter/updatePw')}">修改密码</a></li>
+        </ul>
+      </div>
+    </block>
+      <!-- 左边导航结束 -->
+      <!-- 右边主体 -->
+    <block name="main">
+      <div class="col-md-9 resume-border">
+        <div class="online-resume">
+          <h3>修改个人登录密码</h3>
+        </div>
+        <!-- 简历右边导航选项卡 -->
+        <ul class="nav nav-tabs">
+          <li role="presentation" class="active"><a href="{:U('Home/Jobhunter/updatePw')}">修改密码</a></li>
+        </ul>
+        <!-- 简历右边导航选项卡结束 -->
+        <!-- 修改密码 -->
+        <div class="container" style="margin-top:70px;margin-bottom:50px;">
+          <form id="form" class="form-horizontal" method="post" action="{:U('Home/Jobhunter/checkPassword','id='.$_SESSION['ITUser']['id'])}">
+            <div class="form-group">
+              <label for="nativePassword" class="col-md-offset-1 col-md-2 control-label">*原&nbsp;&nbsp;&nbsp;&nbsp;密&nbsp;&nbsp;&nbsp;&nbsp;码:</label>
+              <div class="col-md-4">
+                <input type="password" class="form-control" id="nativePassword" name="password" placeholder="请输入原密码">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="newPassword" class="col-md-offset-1 col-md-2 control-label">*新&nbsp;&nbsp;&nbsp;&nbsp;密&nbsp;&nbsp;&nbsp;&nbsp;码:</label>
+              <div class="col-md-4">
+                <input type="password" class="form-control" id="newPassword"  name="newPassword" placeholder="6-17位数字、字母，不支持空格">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="againPassword" class="col-md-offset-1 col-md-2 control-label">*重复新密码:</label>
+              <div class="col-md-4">
+                <input type="password" class="form-control" id="againPassword" name="againPassword" placeholder="请再次输入新密码">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-md-offset-3 col-md-1">
+                <button type="submit" class="btn btn-info">确定修改</button>
+              </div>
+              <div class="col-md-1">
+                <button type="reset" class="btn btn-default">重置</button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <!-- 修改密码结束 -->
+      </div>
+    </block>
+      <!-- 底部版权 -->
+    <block name="footer">
+      <include file="Common/footer"/>
+    </block>
+      <!-- 底部版权结束 -->

@@ -1,0 +1,98 @@
+<extend name="Common:core" />
+  <!-- 标题 -->
+  <block name="title"> 
+    <title>企业个人中心-{$sysInfo.title}</title>
+  </block>
+  <!-- 标题结束 -->
+    <!-- 导航开始 -->
+    <block name="nav">
+      <include file="Common:header" />
+    </block>
+    <!-- 导航结束 -->
+    <!-- 右边主体 -->
+      <!-- 左边导航开始 -->
+      <block name="left">
+        <div class="col-md-3" style="border-top:1px solid #ddd;">
+          <div style="margin-top:10px;">
+            <img src="{$path}/uploads/enterprise/photo/{$_SESSION['ITUser']['en_photo']}" alt="头像" class="img-circle center-block" width="160" height="160" style="margin-bottom:10px;">
+            <p class="text-muted text-center"><strong>{$_SESSION['ITUser']['en_name']}</strong></p>
+          </div>
+          <ul class="nav nav-pills nav-stacked">
+            <li role="presentation" class="active"><a href="{:U('Home/Enterprise/index')}">个人中心</a></li>
+            <li role="presentation"><a href="{:U('Home/EnApply/listApply')}">招聘管理</a></li>
+            <li role="presentation"><a href="{:U('Home/DealResume/index')}">简历管理</a></li>
+            <li role="presentation"><a href="{:U('Home/Enterprise/setEnInfo')}">企业管理</a></li>
+            <li role="presentation"><a href="{:U('Home/Enterprise/updatePw')}">修改密码</a></li>
+          </ul>
+        </div>
+      </block>
+      <!-- 左边导航结束 -->
+      <!-- 右边主体 -->
+      <block name="main">
+        <div class="col-md-9 resume-border">
+          <div class="online-resume">
+            <h3>欢迎进入企业个人中心</h3>
+          </div>
+          <!-- 简历右边导航选项卡 -->
+          <ul class="nav nav-tabs">
+            <li role="presentation" class="active"><a href="{:U('Home/Enterprise/index')}">个人资料</a></li>
+            <li role="presentation"><a href="{:U('Home/Enterprise/getInfo')}">修改账号信息</a></li>
+          </ul>
+          <!-- 简历右边导航选项卡结束 -->
+          <!-- 我的信息 -->
+          <div class="alert alert-info" role="alert" id="umessage">
+            <span>我的个人资料</span>
+          </div>
+          <!-- 姓名、公司、照片等信息面板 -->
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <div class="media">
+                <div class="media-left">
+                  <img src="{$path}/uploads/enterprise/photo/{$enterprise.photo}" alt="" width="100">
+                </div>
+                <div class="media-body">
+                  <h3 style="margin-top:5px;">{$enterprise.name}</h3>
+                  <h4>{$enterprise.en_name}</h4>
+                  <span>{$enterprise.en_province}-{$enterprise.en_city}-{$enterprise.en_county}-{$enterprise.en_address_details}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- 姓名、公司、照片面板结束 -->
+          <!-- 基本信息 -->
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <span class="glyphicon glyphicon-user">&nbsp;<strong>基本信息</strong></span>
+            </div>
+            <div class="panel-body">
+              <form class="form-horizontal">
+                <div class="form-group">
+                  <div class="col-md-3">
+                    <label>职位：</label>{$enterprise.position}
+                  </div>
+                  <div class="col-md-3">
+                    <label>电话：</label>{$enterprise.phone}
+                  </div>
+                  <div class="col-md-4">
+                    <label>邮箱：</label>{$enterprise.email}
+                  </div>
+                  <div class="col-md-2">
+                    <label>性别：</label>
+                    <if condition="$enterprise.sex eq '1'">
+                      先生
+                    <else />
+                      女士
+                    </if>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+          <!-- 基本信息面板结束 -->
+        </div>
+      </block>
+      <!-- 底部版权 -->
+      <block name="footer">
+        <include file="Common:footer" />
+      </block>
+      <!-- 底部版权结束 -->

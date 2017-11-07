@@ -1,0 +1,103 @@
+<extend name="Common:list" />
+  <block name="title">
+    <title>招聘信息详情-{$sysInfo.title}</title>
+  </block>
+  <block name="body">
+    <body style="background-color:#f6f6f6;">
+  </block>
+  <!-- 导航开始 -->
+  <block name="nav">
+    <include file="Common:header" />
+  </block>
+  <!-- 导航结束 -->
+  <!-- 页面主体  -->
+  <!-- 将父模板头部赋空 -->
+  <block name="top"></block>
+  <!-- 顶部结束 -->
+  <!-- 招聘工作详情框 -->
+  <block name="main">
+    <div class="col-md-9">
+    <!-- 工作名称显示 -->
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <p class="bg-primary" style="padding-left:15px;">
+          <span style="font-size:25px;">{$applyDetails.job_name}</span>
+          <present name="collected">
+            <a type="button" class="btn btn-warning pull-right" style="margin:13px 10px 0 0;"><span class="glyphicon glyphicon-heart-empty"><strong>{$collected}</strong></span></a>
+          <else />
+            <a type="button" class="btn btn-warning pull-right" style="margin:13px 10px 0 0;" href="{:U('Home/Apply/collectApply/','aid='.$applyDetails['id'])}"><span class="glyphicon glyphicon-heart-empty"><strong>收藏</strong></span></a>
+          </present>
+          <present name="applyed">
+            <a type="button" class="btn btn-warning pull-right" style="margin:13px 10px 0 0;"><span class="glyphicon glyphicon-check"><strong>{$applyed}</strong></span></a>
+          <else />
+            <a type="button" class="btn btn-warning pull-right" style="margin:13px 10px 0 0;" href="{:U('Home/Apply/sendResume/','aid='.$applyDetails['id'])}"><span class="glyphicon glyphicon-check"><strong>投递简历</strong></span></a>
+          </present>
+          <br />
+          <span style="font-size:17px;">{$applyDetails.en_name}</span>
+        </p>
+      </div>
+      <div class="panel-body">
+        <span class="glyphicon glyphicon-map-marker">工作地点：{$applyDetails.work_province}{$applyDetails.work_city}　</span>
+        <span class="glyphicon glyphicon-time">发布于：{$applyDetails.publish_time|date="Y-m-d H:i:s",###}　</span>
+        <span class="glyphicon glyphicon-yen">月薪：{$applyDetails.salary}　</span>
+      </div>
+      <div class="panel-body">
+        <ul class="list-inline">
+          <li>学历要求：{$applyDetails.education_claim}&nbsp;&nbsp;&nbsp;&nbsp;|</li>
+          <li>工作经历要求：{$applyDetails.job_experience}&nbsp;&nbsp;&nbsp;&nbsp;|</li>
+          <li>年龄要求：{$applyDetails.age_claim}</li>
+        </ul>
+      </div>
+      <div class="panel-body">
+        <ul class="list-inline">
+          <volist name="workAdvantagesArr" id="vo">
+            <li style="margin-bottom:10px;"><button type="button" class="btn btn-info">{$vo}</button></li>
+          </volist>
+        </ul>
+      </div>
+      <table class="table table-striped">
+        <tr>
+          <th>职位职责</th>
+        </tr>
+        <tr>
+          <td>{:html_entity_decode($applyDetails['work_duty'])}</td>
+        </tr>
+        <tr>
+          <th>任职要求</th>
+        </tr>
+        <tr>
+          <td>{:html_entity_decode($applyDetails['work_claim'])}</td>
+        </tr>
+        <tr>
+          <th>企业介绍</th>
+        </tr>
+        <tr>
+          <td>{$applyDetails.en_introduction}</td>
+        </tr>
+      </table>
+    </div>
+    <!-- 工作名称和单位结束 -->
+    </div>
+  </block>
+  <!-- 招聘工作详情结束 -->
+  <!-- 企业信息展示 -->
+  <block name="right">
+    <div class="col-md-3">
+      <div class="panel panel-default">
+        <div class="panel-heading">职位发布企业</div>
+        <div class="panel-body">
+          <a href="{:U('Home/EnterpriseList/enterprise/','id='.$enterpriseDetails['id'])}" target="_blank"><img src="{$path}/uploads/enterprise/photo/{$enterpriseDetails.en_photo}" alt="" class="img-thumbnail"></a>
+          <h4>{$enterpriseDetails.en_name}</h4>
+          <span>规模：{$enterpriseDetails.en_scale}</span><br />
+          <span>性质：{$enterpriseDetails.en_nature}</span><br />
+          <span>地址：{$enterpriseDetails.en_province}{$enterpriseDetails.en_address_details}</span>
+        </div>
+      </div>
+    </div>
+  </block>
+  <!-- 招聘企业信息结束 -->
+  <!-- 底部版权信息 -->
+  <block name="footer">
+    <include file="Common:footer" />
+  </block>
+  <!-- 底部版权信息结束 -->
